@@ -50,7 +50,6 @@ const Book = () => {
                                 />
                                 <CardContent>
                                     <Typography variant="body2">{book.title}</Typography>
-                                    <Typography variant="body2">5 sao</Typography>
                                 </CardContent>
                             </Card>
                         </Grid>
