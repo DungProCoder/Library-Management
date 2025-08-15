@@ -26,6 +26,14 @@ const Book = () => {
             title: "Sức Mạnh Của Thói Quen",
             image: "https://images.unsplash.com/photo-1512820790803-83ca734da794"
         },
+        {
+            title: "Nhà giả kim",
+            image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+        },
+        {
+            title: "Dám bị ghét",
+            image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=600&auto=format&fit=crop",
+        },
     ];
 
     return (

@@ -52,11 +52,16 @@ const NavbarMenu = () => {
                     <Menu
                         anchorEl={anchorEl}
                         open={currentMenu === "theloai"}
+                        autoFocus={false}
                         MenuListProps={{
+                            autoFocusItem: false,
                             onMouseEnter: () => { },
                             onMouseLeave: handleCloseMenu
                         }}
                     >
+                        <MenuItem component={Link} to="/the-loai" onClick={handleCloseMenu}>
+                            Tất cả thể loại
+                        </MenuItem>
                         <MenuItem component={Link} to="/category/tieu-thuyet" onClick={handleCloseMenu}>
                             Tiểu thuyết
                         </MenuItem>
@@ -89,25 +94,22 @@ const NavbarMenu = () => {
                             },
                         }}
                     >
-                        Hub sách
+                        Trung tâm sách
                     </Button>
                     <Menu
                         anchorEl={anchorEl}
                         open={currentMenu === "hubsach"}
                         MenuListProps={{
-                            autoFocus: false,
+                            autoFocusItem: false,
                             onMouseEnter: () => { },
                             onMouseLeave: handleCloseMenu
                         }}
                     >
-                        <MenuItem component={Link} to="/hub/sach-moi" onClick={handleCloseMenu}>
-                            Sách mới
+                        <MenuItem component={Link} to="/hub/ha-noi" onClick={handleCloseMenu}>
+                            LIBRARY Hà Nội
                         </MenuItem>
-                        <MenuItem component={Link} to="/hub/sach-noi-bat" onClick={handleCloseMenu}>
-                            Sách nổi bật
-                        </MenuItem>
-                        <MenuItem component={Link} to="/hub/sach-giam-gia" onClick={handleCloseMenu}>
-                            Đang giảm giá
+                        <MenuItem component={Link} to="/hub/ho-chi-minh" onClick={handleCloseMenu}>
+                            LIBRARY Hồ Chí Minh
                         </MenuItem>
                     </Menu>
 
@@ -130,6 +132,7 @@ const NavbarMenu = () => {
                         anchorEl={anchorEl}
                         open={currentMenu === "thuvien"}
                         MenuListProps={{
+                            autoFocusItem: false,
                             onMouseEnter: () => { },
                             onMouseLeave: handleCloseMenu
                         }}
