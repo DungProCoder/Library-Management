@@ -7,11 +7,11 @@ from django.utils import timezone
 class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         if self.request.user.role != 'admin':
-            PermissionError("Bạn không có quyền thêm sách")
+            raise PermissionError("Bạn không có quyền thêm sách")
         serializer.save()
 
 class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):

@@ -3,7 +3,7 @@ from .models import Book, BorrowRecord
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BorrowRecord
+        model = Book
         fields = '__all__'
 
 class BorrowRecordSerializer(serializers.ModelSerializer):

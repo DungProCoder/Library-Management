@@ -108,7 +108,7 @@ const LeftBox = () => {
                             displayEmpty
                             sx={{ minWidth: 160 }}
                         >
-                            <MenuItem value="name">Tên Sách</MenuItem>
+                            <MenuItem value="name">Tên sách</MenuItem>
                             <MenuItem value="rating">Đánh giá</MenuItem>
                         </Select>
                     </FormControl>

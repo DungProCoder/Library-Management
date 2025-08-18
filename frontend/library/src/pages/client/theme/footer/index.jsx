@@ -8,7 +8,7 @@ import Information from "./information";
 
 const Footer = () => {
     return (
-        <Box sx={{ bgcolor: "#b8b8b8ff", py: 5, mt: 4 }}>
+        <Box sx={{ bgcolor: "#cccccc", py: 5, mt: 4 }}>
             <Container>
                 <Information />
                 <Copyright />

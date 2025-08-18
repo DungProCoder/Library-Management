@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Link } from "react-router-dom";
 import {
     Container,
     AppBar,
@@ -16,11 +17,13 @@ const HeaderTop = () => {
             <AppBar position="static" color="inherit" elevation={0}>
                 <Container maxWidth="lg">
                     <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-                        <img
-                            src="assets/img/logo.png"
-                            alt="Logo"
-                            style={{ height: 80, width: 100 }}
-                        />
+                        <Link to="/">
+                            <img
+                                src="assets/img/logo.png"
+                                alt="Logo"
+                                style={{ height: 80, width: 100 }}
+                            />
+                        </Link>
                         <Box
                             sx={{
                                 display: "flex",

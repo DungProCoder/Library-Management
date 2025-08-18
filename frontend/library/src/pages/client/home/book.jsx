@@ -5,7 +5,8 @@ import {
     CardMedia,
     Typography,
     Grid,
-    Box
+    Box,
+    Rating
 } from "@mui/material";
 
 const Book = () => {
@@ -43,14 +44,24 @@ const Book = () => {
                 <Grid container spacing={2}>
                     {books.map((book, idx) => (
                         <Grid item xs={6} sm={4} md={3} key={idx}>
-                            <Card sx={{ justifyContent: "space-between", width: 208, height: "100%" }}>
+                            <Card
+                                sx={{
+                                    justifyContent: "space-between",
+                                    width: 208,
+                                    height: "100%",
+                                    borderRadius: 3,
+                                    overflow: "hidden",
+                                    transition: "transform .2s, box-shadow .2s",
+                                    "&:hover": { transform: "translateY(-4px)", boxShadow: 4 },
+                                }}
+                            >
                                 <CardMedia
                                     component="img"
                                     image={book.image}
                                     alt={book.title}
                                     loading="lazy"
                                     sx={{
-                                        height: 150,
+                                        height: 180,
                                         width: "100%",
                                         objectFit: "cover",
                                         objectPosition: "center"
@@ -58,6 +69,9 @@ const Book = () => {
                                 />
                                 <CardContent>
                                     <Typography variant="body2">{book.title}</Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                        <Rating value={4.5} precision={0.5} readOnly size="small" />
+                                    </Typography>
                                 </CardContent>
                             </Card>
                         </Grid>

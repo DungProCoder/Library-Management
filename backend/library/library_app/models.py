@@ -10,6 +10,9 @@ class Category(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='books/covers/', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
     author = models.CharField(max_length=255)
     isbn = models.CharField(max_length=13, unique=True)
     quantity = models.IntegerField(default=0)
@@ -17,6 +20,13 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def avg_rating(self):
+        ratings = self.ratings.all()
+        if ratings.exists():
+            return round(sum([r.rate for r in ratings]) / ratings.count(), 1)
+        return 0
     
 class Location(models.Model):
     name = models.CharField(max_length=255)
@@ -43,8 +53,21 @@ class BorrowRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(null=True, blank=True)
-    location = models.ForeignKey(LocatedBook, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='borrowing')
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratings")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="ratings")
+    rate = models.IntegerField(default=0)  # giá trị 1-5 sao
+    comment = models.TextField(null=True, blank=True)
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')  # mỗi user chỉ được rate 1 lần / sách
+
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title} ({self.rate})"
