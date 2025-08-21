@@ -18,7 +18,7 @@ const About = () => {
             <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
                 <Tabs value={tab} onChange={handleChange}>
                     <Tab label="Chi tiết" />
-                    <Tab label="Giới thiệu sách" />
+                    <Tab label="Đánh giá" />
                 </Tabs>
             </Box>
 
@@ -30,9 +30,7 @@ const About = () => {
                 )}
                 {tab === 1 && (
                     <Typography variant="body1" color="text.primary">
-                        Bạn sẽ tìm thấy gì trong cuốn sách này? Sự thông minh, hài hước,
-                        chiêm nghiệm sâu sắc về thiền định, cuộc sống, tình yêu, tuổi tác,
-                        giá trị thật sự của bản thân, …
+                        Đánh giá
                     </Typography>
                 )}
             </Box>

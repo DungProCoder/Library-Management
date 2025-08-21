@@ -1,23 +1,8 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .serializers import BookSerializer, BorrowRecordSerializer
-from .models import Book, BorrowRecord
+from ...serializers import BorrowRecordSerializer
+from ...models import Book, BorrowRecord
 from django.utils import timezone
-
-class BookListCreateView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def perform_create(self, serializer):
-        if self.request.user.role != 'admin':
-            raise PermissionError("Bạn không có quyền thêm sách")
-        serializer.save()
-
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 class BorrowBookView(generics.CreateAPIView):
     serializer_class = BorrowRecordSerializer

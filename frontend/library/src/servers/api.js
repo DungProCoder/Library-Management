@@ -1,10 +1,10 @@
 import Axios from "axios";
 
-const api = Axios.create({
-    baseURL: "http://localhost:8000/api",
+const API = Axios.create({
+    baseURL: "http://127.0.0.1:8000/api",
 });
 
-api.interceptors.request.use((req) => {
+API.interceptors.request.use((req) => {
     const token = localStorage.getItem("access_token");
     if (token) {
         req.headers.Authorization = `Bearer ${token}`;
@@ -12,4 +12,4 @@ api.interceptors.request.use((req) => {
     return req;
 });
 
-export default api;
+export default API;

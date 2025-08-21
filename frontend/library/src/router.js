@@ -6,53 +6,52 @@ import Category from "./pages/client/category";
 import BookDetail from "./pages/client/detail";
 import Cart from "./pages/client/cart";
 import Checkout from "./pages/client/checkout";
+import AdminLayout from "./pages/admin/theme/master";
+import AdminDashboard from "./pages/admin/dashboard";
+import BookList from "./pages/admin/book";
+import BookAdd from "./pages/admin/book/create";
+import CategoryList from "./pages/admin/category";
+import CategoryAdd from "./pages/admin/category/create";
+import CategoryEdit from "./pages/admin/category/edit";
+import BorrowRecordList from "./pages/admin/borrow";
+import UserList from "./pages/admin/user";
 
 const renderUserRouter = () => {
-    const userRouter = [
-        {
-            path: ROUTER.USER.HOME,
-            element: <HomePage />,
-        },
-        {
-            path: ROUTER.USER.CATEGORY,
-            element: <Category />,
-        },
-        {
-            path: ROUTER.USER.BOOK_DETAIL,
-            element: <BookDetail />,
-        },
-        {
-            path: ROUTER.USER.CART,
-            element: <Cart />,
-        },
-        {
-            path: ROUTER.USER.CHECKOUT,
-            element: <Checkout />,
-        },
-    ]
-
     return (
-        <MasterLayout>
-            <Routes>
-                {userRouter.map((item, index) => (
-                    <Route key={index} path={item.path} element={item.element}>
-                        {item.children &&
-                            item.children.map((child, childIndex) => (
-                                <Route
-                                    key={childIndex}
-                                    path={child.path}
-                                    element={child.element}
-                                />
-                            ))}
-                    </Route>
-                ))}
-            </Routes>
-        </MasterLayout>
+        <Route path={ROUTER.USER.ROOT} element={<MasterLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path={ROUTER.USER.CATEGORY} element={<Category />} />
+            <Route path={ROUTER.USER.BOOK_DETAIL} element={<BookDetail />} />
+            <Route path={ROUTER.USER.CART} element={<Cart />} />
+            <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
+        </Route>
+    );
+}
+
+const renderAdminRouter = () => {
+    return (
+        <Route path={ROUTER.ADMIN.ROOT} element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path={ROUTER.ADMIN.BOOKS} element={<BookList />} />
+            <Route path={ROUTER.ADMIN.BOOK_ADD} element={<BookAdd />} />
+
+            <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
+            <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />
+            <Route path={ROUTER.ADMIN.CATEGORY_EDIT} element={<CategoryEdit />} />
+            <Route path={ROUTER.ADMIN.USERS} element={<UserList />} />
+            <Route path={ROUTER.ADMIN.BORROW} element={<BorrowRecordList />} />
+        </Route>
     )
 }
 
+
 const renderCustom = () => {
-    return renderUserRouter()
-}
+    return (
+        <Routes>
+            {renderUserRouter()}
+            {renderAdminRouter()}
+        </Routes>
+    );
+};
 
 export default renderCustom

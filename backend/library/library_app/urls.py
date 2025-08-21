@@ -1,9 +1,6 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('books/', views.BookListCreateView.as_view(), name='book_list_create'),
-    path('books/<int:pk>/', views.BookRetrieveUpdateDestroyView.as_view(), name='book_detail'),
-    path('borrow/', views.BorrowBookView.as_view(), name='borrow_book'),
-    path('return/<int:pk>/', views.ReturnBookView.as_view(), name='return_book'),
+    path('admin/', include('library_app.views.admin.urls')),
+    path('client/', include('library_app.views.client.urls')),
 ]

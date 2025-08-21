@@ -1,9 +1,15 @@
 from django.db import models
+from django.utils.text import slugify
 from users.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug or self.name != Category.objects.filter(pk=self.pk).first().name if self.pk else None:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -12,7 +18,6 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='books/covers/', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    about = models.TextField(null=True, blank=True)
     author = models.CharField(max_length=255)
     isbn = models.CharField(max_length=13, unique=True)
     quantity = models.IntegerField(default=0)
