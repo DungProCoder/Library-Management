@@ -72,6 +72,7 @@ const CategoryList = () => {
             headerName: "Hành động",
             width: 140,
             sortable: false,
+            disableColumnMenu: true,
             headerAlign: "center",
             align: "center",
             renderCell: (params) => (

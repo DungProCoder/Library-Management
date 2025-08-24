@@ -10,6 +10,7 @@ import AdminLayout from "./pages/admin/theme/master";
 import AdminDashboard from "./pages/admin/dashboard";
 import BookList from "./pages/admin/book";
 import BookAdd from "./pages/admin/book/create";
+import BookEdit from "./pages/admin/book/edit";
 import CategoryList from "./pages/admin/category";
 import CategoryAdd from "./pages/admin/category/create";
 import CategoryEdit from "./pages/admin/category/edit";
@@ -34,6 +35,7 @@ const renderAdminRouter = () => {
             <Route index element={<AdminDashboard />} />
             <Route path={ROUTER.ADMIN.BOOKS} element={<BookList />} />
             <Route path={ROUTER.ADMIN.BOOK_ADD} element={<BookAdd />} />
+            <Route path={ROUTER.ADMIN.BOOK_EDIT} element={<BookEdit />} />
 
             <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
             <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />

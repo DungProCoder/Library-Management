@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+import random
 from users.models import User
 
 class Category(models.Model):
@@ -25,6 +26,15 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        if not self.isbn:
+            while True:
+                isbn = ''.join([str(random.randint(0, 9)) for _ in range(13)])
+                if not Book.objects.filter(isbn=isbn).exists():
+                    self.isbn = isbn
+                    break
+        super().save(*args, **kwargs)
     
     @property
     def avg_rating(self):

@@ -13,10 +13,11 @@ import {
     MenuItem,
 } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import API from "../../../servers/api";
 
 const BookAdd = () => {
+    const { id } = useParams();
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [image, setImage] = useState(null);
@@ -61,8 +62,26 @@ const BookAdd = () => {
     };
 
     useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const response = await API.get(`/admin/books/${id}`);
+                setTitle(response.data.title);
+                setAuthor(response.data.author);
+                setDescription(response.data.description);
+                setQuantity(response.data.quantity);
+                setCategory(response.data.category);
+
+                if (response.data.image) {
+                    setImage(response.data.image);
+                    setPreview(response.data.image);
+                }
+            } catch (error) {
+                console.error("Failed to fetch books:", error);
+            }
+        };
+        fetchBooks();
         fetchCategories();
-    }, []);
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -79,16 +98,16 @@ const BookAdd = () => {
         formData.append("description", description);
         formData.append("quantity", quantity);
         formData.append("category", category);
-        if (image) formData.append("image", image);
+        if (image instanceof File) formData.append("image", image);
 
         try {
-            await API.post("/admin/books/", formData, {
+            await API.put(`/admin/books/${id}/`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
             setSuccess(true);
-            setTimeout(() => navigate("/admin/books"), 1000);
+            setTimeout(() => navigate("/admin/books/"), 1000);
         } catch (error) {
             console.error("Failed to add book:", error);
             setError({ general: "Có lỗi xảy ra, vui lòng thử lại sau." });
@@ -99,10 +118,10 @@ const BookAdd = () => {
         <Box sx={{ margin: "0 auto", padding: 3 }}>
             <Paper sx={{ padding: 3 }}>
                 <Typography variant="h5" gutterBottom>
-                    ➕ Thêm sách mới
+                    ✏️ Sửa sách
                 </Typography>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <TextField
                         label="Tên sách"
                         value={title}
@@ -209,7 +228,7 @@ const BookAdd = () => {
                                 width: "100%",
                             }}
                         >
-                            Thêm sách
+                            Lưu thay đổi
                         </Button>
                     </Box>
                 </form>
@@ -231,7 +250,7 @@ const BookAdd = () => {
                 onClose={() => setSuccess(false)}
             >
                 <Alert severity="success" onClose={() => setSuccess(false)}>
-                    ✅ Thêm sách thành công!
+                    ✅ Lưu thành công!
                 </Alert>
             </Snackbar>
         </Box>

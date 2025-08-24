@@ -21,12 +21,12 @@ const Dashboard = () => {
     return (
         <div style={{ padding: "20px" }}>
             <Typography variant="h5" gutterBottom fontWeight="bold">
-                📊 Dashboard
+                📊 Bảng điều khiển
             </Typography>
 
             <Grid container spacing={3}>
                 {/* Tổng số sách */}
-                <Grid size={3} item xs={12} sm={6} md={3}>
+                <Grid size={3}>
                     <Card sx={{ bgcolor: "#e3f2fd", borderRadius: 3 }}>
                         <CardContent>
                             <BookIcon sx={{ fontSize: 40, color: "#1976d2" }} />
@@ -37,7 +37,7 @@ const Dashboard = () => {
                 </Grid>
 
                 {/* Tổng số người dùng */}
-                <Grid size={3} item xs={12} sm={6} md={3}>
+                <Grid size={3}>
                     <Card sx={{ bgcolor: "#f1f8e9", borderRadius: 3 }}>
                         <CardContent>
                             <PeopleIcon sx={{ fontSize: 40, color: "#388e3c" }} />
@@ -48,7 +48,7 @@ const Dashboard = () => {
                 </Grid>
 
                 {/* Đang mượn */}
-                <Grid size={3} item xs={12} sm={6} md={3}>
+                <Grid size={3}>
                     <Card sx={{ bgcolor: "#fff3e0", borderRadius: 3 }}>
                         <CardContent>
                             <AccessTimeIcon sx={{ fontSize: 40, color: "#f57c00" }} />
@@ -59,7 +59,7 @@ const Dashboard = () => {
                 </Grid>
 
                 {/* Đã trả */}
-                <Grid size={3} item xs={12} sm={6} md={3}>
+                <Grid size={3}>
                     <Card sx={{ bgcolor: "#f3e5f5", borderRadius: 3 }}>
                         <CardContent>
                             <CheckCircleIcon sx={{ fontSize: 40, color: "#7b1fa2" }} />
