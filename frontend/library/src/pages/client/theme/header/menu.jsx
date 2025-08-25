@@ -113,41 +113,6 @@ const NavbarMenu = () => {
                         </MenuItem>
                     </Menu>
 
-                    {/* Thư viện */}
-                    <Button
-                        endIcon={<KeyboardArrowDownIcon />}
-                        variant="text"
-                        disableRipple
-                        onMouseEnter={(e) => handleOpenMenu(e, "thuvien")}
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: 'transparent',
-                                color: 'primary.main',
-                            }
-                        }}
-                    >
-                        Thư viện
-                    </Button>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={currentMenu === "thuvien"}
-                        MenuListProps={{
-                            autoFocusItem: false,
-                            onMouseEnter: () => { },
-                            onMouseLeave: handleCloseMenu
-                        }}
-                    >
-                        <MenuItem component={Link} to="/library/borrowed" onClick={handleCloseMenu}>
-                            Sách đã mượn
-                        </MenuItem>
-                        <MenuItem component={Link} to="/library/favorites" onClick={handleCloseMenu}>
-                            Sách yêu thích
-                        </MenuItem>
-                        <MenuItem component={Link} to="/library/history" onClick={handleCloseMenu}>
-                            Lịch sử đọc
-                        </MenuItem>
-                    </Menu>
-
                     {/* Hỗ trợ */}
                     <Link to="/ho-tro" style={{ textDecoration: "none" }}>
                         <Button>Hỗ trợ</Button>

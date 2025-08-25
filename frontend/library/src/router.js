@@ -6,6 +6,9 @@ import Category from "./pages/client/category";
 import BookDetail from "./pages/client/detail";
 import Cart from "./pages/client/cart";
 import Checkout from "./pages/client/checkout";
+import Login from "./pages/client/auth/login";
+import Register from "./pages/client/auth/register";
+
 import AdminLayout from "./pages/admin/theme/master";
 import AdminDashboard from "./pages/admin/dashboard";
 import BookList from "./pages/admin/book";
@@ -25,6 +28,8 @@ const renderUserRouter = () => {
             <Route path={ROUTER.USER.BOOK_DETAIL} element={<BookDetail />} />
             <Route path={ROUTER.USER.CART} element={<Cart />} />
             <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
+            <Route path={ROUTER.USER.LOGIN} element={<Login />} />
+            <Route path={ROUTER.USER.REGISTER} element={<Register />} />
         </Route>
     );
 }

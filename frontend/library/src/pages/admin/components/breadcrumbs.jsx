@@ -5,7 +5,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 const breadcrumbNameMap = {
-    "/books": "Quản lý sách",
+    "/books": { label: "Quản lý sách" },
+    "/books/create": { label: "Thêm sách" },
+    "/books/edit": { label: "Chỉnh sửa" },
+    "/categories": { label: "Quản lý danh mục" },
+    "/categories/create": { label: "Thêm danh mục" },
+    "/categories/edit": { label: "Chỉnh sửa" },
 };
 
 const BreadcrumbsComponent = ({ items }) => {
@@ -29,19 +34,21 @@ const BreadcrumbsComponent = ({ items }) => {
                 const to = `/${pathnames.slice(0, index + 1).join("/")}`;
                 const isLast = index === pathnames.length - 1;
 
+                const item = breadcrumbNameMap[to];
+
                 return isLast ? (
                     <Typography key={to} color="text.primary">
-                        {breadcrumbNameMap[to] || value}
+                        {item?.label || value}
                     </Typography>
                 ) : (
                     <Link
                         key={to}
                         component={RouterLink}
-                        to={to}
+                        to={'/admin' + to}
                         underline="hover"
                         color="inherit"
                     >
-                        {breadcrumbNameMap[to] || value}
+                        {item?.label || value}
                     </Link>
                 );
             })}

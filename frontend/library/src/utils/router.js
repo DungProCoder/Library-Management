@@ -5,6 +5,8 @@ export const ROUTER = {
         BOOK_DETAIL: '/chi-tiet-sach',
         CART: '/gio-hang',
         CHECKOUT: '/thanh-toan',
+        LOGIN: '/dang-nhap',
+        REGISTER: '/dang-ky',
     },
     ADMIN: {
         ROOT: "/admin",

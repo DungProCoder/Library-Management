@@ -18,12 +18,6 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const breadcrumbItems = {
-        "/dashboard": "Dashboard",
-        "/dashboard/reports": "Báo cáo",
-        "/dashboard/reports/monthly": "Báo cáo tháng",
-    };
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -45,7 +39,7 @@ const Header = () => {
                     borderBottom: '1px solid #e0e0e0',
                 }}
             >
-                <Breadcrumbs items={breadcrumbItems} />
+                <Breadcrumbs />
                 <Tooltip title="Account settings">
                     <IconButton
                         onClick={handleClick}
