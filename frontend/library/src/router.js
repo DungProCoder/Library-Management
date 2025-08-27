@@ -9,6 +9,10 @@ import Checkout from "./pages/client/checkout";
 import Login from "./pages/client/auth/login";
 import Register from "./pages/client/auth/register";
 
+import Profile from "./pages/client/profile";
+import Info from "./pages/client/profile/info";
+import Account from "./pages/client/profile/account";
+
 import AdminLayout from "./pages/admin/theme/master";
 import AdminDashboard from "./pages/admin/dashboard";
 import BookList from "./pages/admin/book";
@@ -30,6 +34,11 @@ const renderUserRouter = () => {
             <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
             <Route path={ROUTER.USER.LOGIN} element={<Login />} />
             <Route path={ROUTER.USER.REGISTER} element={<Register />} />
+
+            <Route path={ROUTER.USER.ACCOUNT} element={<Profile />}>
+                <Route path="thong-tin-lien-he" element={<Info />} />
+                <Route path="tai-khoan" element={<Account />} />
+            </Route>
         </Route>
     );
 }

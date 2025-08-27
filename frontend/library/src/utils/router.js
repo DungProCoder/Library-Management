@@ -7,6 +7,7 @@ export const ROUTER = {
         CHECKOUT: '/thanh-toan',
         LOGIN: '/dang-nhap',
         REGISTER: '/dang-ky',
+        ACCOUNT: '/thong-tin-ca-nhan',
     },
     ADMIN: {
         ROOT: "/admin",

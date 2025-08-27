@@ -44,7 +44,7 @@ const HeaderTop = () => {
                     <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
                         <Link to="/">
                             <img
-                                src="assets/img/logo.png"
+                                src="/assets/img/logo.png"
                                 alt="Logo"
                                 style={{ height: 80, width: 100 }}
                             />
@@ -119,10 +119,10 @@ const HeaderTop = () => {
                                             autoFocusItem: false,
                                         }}
                                     >
-                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/ho-so-ca-nhan"); }}>
+                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/thong-tin-ca-nhan/thong-tin-lien-he"); }}>
                                             <Avatar /> Hồ sơ
                                         </MenuItem>
-                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/sach-da-muon"); }}>
+                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/thong-tin-ca-nhan/sach-da-muon"); }}>
                                             <BookmarkBorderOutlinedIcon
                                                 sx={{
                                                     width: 32,
@@ -133,7 +133,7 @@ const HeaderTop = () => {
                                                 }}
                                             /> Sách đã mượn
                                         </MenuItem>
-                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/sach-yeu-thich"); }}>
+                                        <MenuItem onClick={() => { handleMenuClose(); navigate("/thong-tin-ca-nhan/sach-yeu-thich"); }}>
                                             <FavoriteBorderOutlinedIcon
                                                 sx={{
                                                     width: 32,

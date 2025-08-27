@@ -12,4 +12,30 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
+API.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (
+            error.response &&
+            error.response.status === 401 &&
+            !originalRequest._retry
+        ) {
+            originalRequest._retry = true;
+            try {
+                const refresh = localStorage.getItem("refresh_token");
+                const res = await API.post("token/refresh/", {
+                    refresh,
+                });
+                localStorage.setItem("access", res.data.access);
+                API.defaults.headers.Authorization = `Bearer ${res.data.access}`;
+                return API(originalRequest);
+            } catch (err) {
+                console.error("Refresh token cũng hết hạn → cần login lại");
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default API;

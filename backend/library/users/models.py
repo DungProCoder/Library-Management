@@ -6,6 +6,8 @@ class User(AbstractUser):
         ('admin', 'Admin'),
         ('user', 'User'),
     )
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
 
     def __str__(self):

@@ -137,7 +137,7 @@ const LeftBox = () => {
             {/* Books */}
             <Grid container spacing={2}>
                 {sortedBooks.slice(0, limit).map((b) => (
-                    <Grid key={b.id} item xs={6} sm={4} md={3}>
+                    <Grid key={b.id}>
                         <Card
                             sx={{
                                 width: 240,

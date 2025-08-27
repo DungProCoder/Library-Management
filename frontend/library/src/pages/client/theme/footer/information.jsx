@@ -12,9 +12,9 @@ const Information = () => {
         <>
             <Grid sx={{ justifyContent: "space-between" }} container spacing={5}>
                 {/* Cột 1 - Giới thiệu */}
-                <Grid item xs={12} sm={4}>
+                <Grid>
                     <img
-                        src="assets/img/logo.png"
+                        src="/assets/img/logo.png"
                         alt="Logo"
                         style={{ height: 60, width: 80 }}
                     />
@@ -24,7 +24,7 @@ const Information = () => {
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid>
                     <Typography variant="h6" gutterBottom>
                         Thông tin chung
                     </Typography>
@@ -67,7 +67,7 @@ const Information = () => {
                 </Grid>
 
                 {/* Cột 2 - Liên hệ */}
-                <Grid item xs={12} sm={4}>
+                <Grid>
                     <Typography variant="h6" gutterBottom>
                         Liên hệ
                     </Typography>
@@ -77,22 +77,22 @@ const Information = () => {
                 </Grid>
 
                 {/* Cột 3 - Mạng xã hội */}
-                <Grid item xs={12} sm={4}>
+                <Grid>
                     <Typography variant="h6" gutterBottom>
                         Kết nối
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2 }}>
                         <a href="https://facebook.com" target="_blank" rel="noreferrer">
-                            <img src="assets/img/icon-facebook.png" alt="Facebook" style={{ width: 24 }} />
+                            <img src="/assets/img/icon-facebook.png" alt="Facebook" style={{ width: 24 }} />
                         </a>
                         <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                            <img src="assets/img/icon-instagram.png" alt="Instagram" style={{ width: 24 }} />
+                            <img src="/assets/img/icon-instagram.png" alt="Instagram" style={{ width: 24 }} />
                         </a>
                         <a href="https://twitter.com" target="_blank" rel="noreferrer">
-                            <img src="assets/img/icon-twitter.png" alt="Twitter" style={{ width: 24 }} />
+                            <img src="/assets/img/icon-twitter.png" alt="Twitter" style={{ width: 24 }} />
                         </a>
                         <a href="https://telegram.com" target="_blank" rel="noreferrer">
-                            <img src="assets/img/icon-telegram.png" alt="Twitter" style={{ width: 24 }} />
+                            <img src="/assets/img/icon-telegram.png" alt="Twitter" style={{ width: 24 }} />
                         </a>
                     </Box>
                 </Grid>

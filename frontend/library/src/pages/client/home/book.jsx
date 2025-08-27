@@ -43,7 +43,7 @@ const Book = () => {
             <Box sx={{ flex: 1 }}>
                 <Grid container spacing={2}>
                     {books.map((book, idx) => (
-                        <Grid item xs={6} sm={4} md={3} key={idx}>
+                        <Grid key={idx}>
                             <Card
                                 sx={{
                                     justifyContent: "space-between",
