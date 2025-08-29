@@ -24,11 +24,17 @@ API.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const refresh = localStorage.getItem("refresh_token");
-                const res = await API.post("token/refresh/", {
+                const res = await API.post("/users/token/refresh/", {
                     refresh,
                 });
-                localStorage.setItem("access", res.data.access);
+                localStorage.setItem("access_token", res.data.access);
+                if (res.data.refresh) {
+                    localStorage.setItem("refresh_token", res.data.refresh);
+                }
+
                 API.defaults.headers.Authorization = `Bearer ${res.data.access}`;
+                originalRequest.headers.Authorization = `Bearer ${res.data.access}`;
+
                 return API(originalRequest);
             } catch (err) {
                 console.error("Refresh token cũng hết hạn → cần login lại");

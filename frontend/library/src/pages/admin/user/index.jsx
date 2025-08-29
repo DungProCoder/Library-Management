@@ -1,31 +1,61 @@
-import React from "react";
+import { memo, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import {
     Box,
     Typography,
-    Button,
     IconButton,
     Chip,
+    Snackbar,
+    Alert,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import { Block, LockOpen } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import API from "../../../servers/api";
 
 const UserList = () => {
-    const users = [
-        { id: 1, username: "admin", email: "admin@example.com", role: "admin", is_active: true },
-        { id: 2, username: "john", email: "john@example.com", role: "user", is_active: true },
-        { id: 3, username: "mary", email: "mary@example.com", role: "user", is_active: false },
-    ];
+    const navigate = useNavigate();
+    const [users, setUsers] = useState([]);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await API.get("/users/list/");
+            setUsers(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleBlockedUser = async (id, isActive) => {
+        const action = isActive ? "Block" : "Mở block";
+        if (window.confirm(`${action} người dùng này?`)) {
+            try {
+                await API.put(`/users/block/${id}/`);
+                setSuccessMessage(`${action} người dùng thành công`);
+                setOpenSnackbar(true);
+                fetchUsers();
+            } catch (error) {
+                console.error(`Failed to ${action.toLowerCase()} user:`, error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     const columns = [
         {
-            field: "id",
-            headerName: "ID",
+            field: "stt",
+            headerName: "STT",
             width: 80,
             headerAlign: "center",
             align: "center",
+            valueGetter: (value, row, column, apiRef) =>
+                apiRef.current.getRowIndexRelativeToVisibleRows(row.id) + 1,
         },
         {
             field: "username",
@@ -78,17 +108,32 @@ const UserList = () => {
                     <IconButton color="primary" size="small" sx={{ mr: 1 }}>
                         <InfoIcon fontSize="small" />
                     </IconButton>
-                    <IconButton color="primary" size="small" sx={{ mr: 1 }}>
+                    <IconButton
+                        color="primary"
+                        size="small"
+                        sx={{ mr: 1 }}
+                        onClick={() => navigate(`/admin/users/edit/${params.row.id}`)}
+                    >
                         <EditIcon fontSize="small" />
                     </IconButton>
-                    {params.row.is_active ? (
-                        <IconButton color="error" size="small">
-                            <Block />
-                        </IconButton>
-                    ) : (
-                        <IconButton color="success" size="small">
-                            <LockOpen />
-                        </IconButton>
+                    {params.row.role === "user" && (
+                        params.row.is_active ? (
+                            <IconButton
+                                color="error"
+                                size="small"
+                                onClick={() => handleBlockedUser(params.row.id, params.row.is_active)}
+                            >
+                                <Block />
+                            </IconButton>
+                        ) : (
+                            <IconButton
+                                color="success"
+                                size="small"
+                                onClick={() => handleBlockedUser(params.row.id, params.row.is_active)}
+                            >
+                                <LockOpen />
+                            </IconButton>
+                        )
                     )}
                 </>
             ),
@@ -106,9 +151,6 @@ const UserList = () => {
                 <Typography variant="h5" fontWeight="bold">
                     👤 Quản lý người dùng
                 </Typography>
-                <Button variant="contained" startIcon={<AddIcon />}>
-                    Thêm
-                </Button>
             </Box>
 
             <Box sx={{ height: 400, width: "100%" }}>
@@ -120,8 +162,22 @@ const UserList = () => {
                     disableSelectionOnClick
                 />
             </Box>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={() => setOpenSnackbar(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+                <Alert
+                    onClose={() => setOpenSnackbar(false)}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                >
+                    {successMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
 
-export default UserList;
+export default memo(UserList);

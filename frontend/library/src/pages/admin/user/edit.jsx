@@ -1,23 +1,25 @@
 import { memo, useState, useEffect } from "react";
 import {
     Box,
+    Paper,
     Grid,
     TextField,
-    Avatar,
-    Checkbox,
-    FormControlLabel,
     Button,
+    Avatar,
     Typography,
-    Paper,
     Snackbar,
-    Alert
+    Alert,
+    FormControlLabel,
+    Checkbox,
+    MenuItem
 } from "@mui/material";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import ImageIcon from '@mui/icons-material/Image';
+import { useParams, useNavigate } from "react-router-dom";
 import API from "../../../servers/api";
 
-const AccountPage = () => {
+const EditUser = () => {
     const [form, setForm] = useState({
-        id: null,
         username: "",
         avatar: null,
         preview: null,
@@ -32,6 +34,9 @@ const AccountPage = () => {
         changeEmail: false,
         changePassword: false,
     });
+
+    const navigate = useNavigate();
+    const { id } = useParams();
     const [success, setSuccess] = useState(false);
 
     const handleImageChange = (e) => {
@@ -51,29 +56,28 @@ const AccountPage = () => {
         }));
     };
 
-    const fetchUser = async () => {
-        try {
-            const res = await API.get("/users/profile/");
-            const data = res.data;
-            setForm((prev) => ({
-                ...prev,
-                id: data.id,
-                username: data.username || "",
-                avatar: data.avatar || null,
-                preview: data.avatar || null,
-                firstName: data.first_name || "",
-                lastName: data.last_name || "",
-                email: data.email || "",
-                phone: data.phone || "",
-            }));
-        } catch (error) {
-            console.error("Error fetching user:", error);
-        }
-    };
-
     useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await API.get(`/users/edit/${id}`);
+                const data = res.data;
+                setForm((prev) => ({
+                    ...prev,
+                    username: data.username || "",
+                    avatar: data.avatar || null,
+                    preview: data.avatar || null,
+                    firstName: data.first_name || "",
+                    lastName: data.last_name || "",
+                    email: data.email || "",
+                    phone: data.phone || "",
+                    isActive: data.is_active,
+                }));
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            }
+        };
         fetchUser();
-    }, [])
+    }, [id])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -100,7 +104,7 @@ const AccountPage = () => {
                 formData.append("confirm_password", form.confirmPassword);
             }
 
-            await API.put(`/users/edit/${form.id}/`, formData, {
+            await API.put(`/users/edit/${id}/`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -108,18 +112,21 @@ const AccountPage = () => {
             });
 
             setSuccess(true);
+            setTimeout(() => {
+                navigate("/admin/users");
+            }, 1000)
         } catch (error) {
             console.error("Failed to update user:", error);
         }
     };
-    
+
     return (
-        <Box sx={{ flex: 1 }}>
-            {/* Form update */}
-            <Paper sx={{ p: 3 }}>
-                <Typography variant="h6" gutterBottom>
-                    Cập nhật tài khoản
+        <Box sx={{ margin: "0 auto", padding: 3 }}>
+            <Paper sx={{ padding: 3 }}>
+                <Typography variant="h5" gutterBottom>
+                    ✏️ Chỉnh sửa người dùng
                 </Typography>
+
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid size={6}>
@@ -254,6 +261,20 @@ const AccountPage = () => {
                                 </>
                             )}
 
+                            <TextField
+                                select
+                                label="Trạng thái"
+                                name="isActive"
+                                value={form.isActive}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                                required
+                            >
+                                <MenuItem value={true}>Hoạt động</MenuItem>
+                                <MenuItem value={false}>Đã khóa</MenuItem>
+                            </TextField>
+
                             {/* Checkbox */}
                             <FormControlLabel
                                 control={
@@ -284,19 +305,29 @@ const AccountPage = () => {
                         </Button>
                     </Box>
                 </form>
-
-                <Snackbar
-                    open={success}
-                    autoHideDuration={3000}
-                    onClose={() => setSuccess(false)}
-                >
-                    <Alert severity="success" onClose={() => setSuccess(false)}>
-                        ✅ Lưu thành công!
-                    </Alert>
-                </Snackbar>
             </Paper>
+
+            <Box sx={{ p: 1, mt: 2 }}>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => navigate("/admin/categories")}
+                >
+                    <KeyboardReturnIcon /> Quay lại
+                </Button>
+            </Box>
+
+            <Snackbar
+                open={success}
+                autoHideDuration={3000}
+                onClose={() => setSuccess(false)}
+            >
+                <Alert severity="success" onClose={() => setSuccess(false)}>
+                    ✅ Lưu thành công!
+                </Alert>
+            </Snackbar>
         </Box>
-    );
+    )
 };
 
-export default memo(AccountPage);
+export default memo(EditUser);

@@ -11,6 +11,8 @@ const breadcrumbNameMap = {
     "/categories": { label: "Quản lý danh mục" },
     "/categories/create": { label: "Thêm danh mục" },
     "/categories/edit": { label: "Chỉnh sửa" },
+    "/users": { label: "Quản lý người dụng" },
+    "/users/edit": { label: "Chỉnh sửa" },
 };
 
 const BreadcrumbsComponent = ({ items }) => {

@@ -15,14 +15,19 @@ import Account from "./pages/client/profile/account";
 
 import AdminLayout from "./pages/admin/theme/master";
 import AdminDashboard from "./pages/admin/dashboard";
+
 import BookList from "./pages/admin/book";
 import BookAdd from "./pages/admin/book/create";
 import BookEdit from "./pages/admin/book/edit";
+
 import CategoryList from "./pages/admin/category";
 import CategoryAdd from "./pages/admin/category/create";
 import CategoryEdit from "./pages/admin/category/edit";
+
 import BorrowRecordList from "./pages/admin/borrow";
+
 import UserList from "./pages/admin/user";
+import UserEdit from "./pages/admin/user/edit";
 
 const renderUserRouter = () => {
     return (
@@ -54,7 +59,10 @@ const renderAdminRouter = () => {
             <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
             <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />
             <Route path={ROUTER.ADMIN.CATEGORY_EDIT} element={<CategoryEdit />} />
+
             <Route path={ROUTER.ADMIN.USERS} element={<UserList />} />
+            <Route path={ROUTER.ADMIN.EDIT} element={<UserEdit />} />
+
             <Route path={ROUTER.ADMIN.BORROW} element={<BorrowRecordList />} />
         </Route>
     )

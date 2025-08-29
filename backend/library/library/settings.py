@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os.path
+import environ
 from pathlib import Path
 from datetime import timedelta
 
@@ -117,7 +118,28 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # token sống 30 phút
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),     # refresh token sống 7 ngày
     "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+# Khởi tạo biến môi trường
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# Đọc file .env
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+# Lấy giá trị từ .env
+DEBUG = env("DEBUG")
+
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env.int("EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

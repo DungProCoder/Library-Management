@@ -24,7 +24,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        API.post("users/token/", form)
+        API.post("/users/token/", form)
             .then((res) => {
                 // Lưu token vào localStorage
                 localStorage.setItem("access_token", res.data.access);

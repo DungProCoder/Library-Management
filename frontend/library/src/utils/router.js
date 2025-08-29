@@ -30,5 +30,6 @@ export const ROUTER = {
 
         // Quản lý người dùng
         USERS: "users",
+        EDIT: "users/edit/:id",
     },
 }

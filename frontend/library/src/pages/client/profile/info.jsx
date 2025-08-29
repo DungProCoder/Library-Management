@@ -46,7 +46,7 @@ const ProfilePage = () => {
             </Typography>
             <Grid container spacing={2}>
                 {/* Thông tin liên hệ */}
-                <Grid size={12} md={6}>
+                <Grid size={12}>
                     <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
                         <CardHeader title="THÔNG TIN LIÊN HỆ" />
                         <CardContent>
