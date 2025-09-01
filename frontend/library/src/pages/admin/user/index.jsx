@@ -166,7 +166,6 @@ const UserList = () => {
                 open={openSnackbar}
                 autoHideDuration={3000}
                 onClose={() => setOpenSnackbar(false)}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
             >
                 <Alert
                     onClose={() => setOpenSnackbar(false)}

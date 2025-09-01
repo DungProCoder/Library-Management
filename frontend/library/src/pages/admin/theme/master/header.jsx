@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     Avatar,
@@ -9,13 +9,14 @@ import {
     IconButton,
     Tooltip,
 } from "@mui/material";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import Breadcrumbs from "../../components/breadcrumbs";
+import API from "../../../../servers/api";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [user, setUser] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
@@ -24,6 +25,27 @@ const Header = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const fetchUser = async () => {
+        try {
+            const res = await API.get("/users/profile/");
+            setUser(res.data);
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
+        window.location.href = "/";
+        handleClose();
     };
 
     return (
@@ -49,7 +71,12 @@ const Header = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                        <Avatar
+                            sx={{ width: 32, height: 32 }}
+                            src={user && user.avatar ? user.avatar : null}
+                        >
+                            {user && user.avatar ? user.avatar : "A"}
+                        </Avatar>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -91,29 +118,20 @@ const Header = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
+                    <Avatar /> Tài khoản
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
-                    Settings
+                    Cài đặt
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <Logout fontSize="small" />
+                        <Logout fontSize="small" onClick={handleLogout} />
                     </ListItemIcon>
-                    Logout
+                    Đăng xuất
                 </MenuItem>
             </Menu>
         </>

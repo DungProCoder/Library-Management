@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
     Container,
@@ -18,9 +18,11 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
+import API from "../../../../servers/api";
 
 const HeaderTop = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const token = localStorage.getItem("access_token");
@@ -29,9 +31,23 @@ const HeaderTop = () => {
     const handleMenuOpen = (e) => setAnchorEl(e.currentTarget);
     const handleMenuClose = () => setAnchorEl(null);
 
+    const fetchUser = async () => {
+        try {
+            const res = await API.get("/users/profile/");
+            setUser(res.data);
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     const handleLogout = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
         window.location.href = "/";
         handleMenuClose();
     };
@@ -76,10 +92,11 @@ const HeaderTop = () => {
                             ) : (
                                 <>
                                     <Avatar
-                                        sx={{ bgcolor: "primary.main", cursor: "pointer" }}
+                                        sx={{ cursor: "pointer" }}
+                                        src={user?.avatar || ""}
                                         onClick={handleMenuOpen}
                                     >
-                                        U
+                                        {user?.first_name?.charAt(0) || ""}
                                     </Avatar>
                                     <Menu
                                         anchorEl={anchorEl}

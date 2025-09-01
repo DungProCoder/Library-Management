@@ -44,7 +44,7 @@ const Register = () => {
         }
 
         try {
-            await API.post("/users/register", form);
+            await API.post("/users/register/", form);
             setSuccess(true);
             setTimeout(() => navigate("/dang-nhap"), 1000);
         } catch (error) {

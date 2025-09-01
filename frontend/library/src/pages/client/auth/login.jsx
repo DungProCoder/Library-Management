@@ -21,21 +21,33 @@ const Login = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
 
-        API.post("/users/token/", form)
-            .then((res) => {
-                // Lưu token vào localStorage
-                localStorage.setItem("access_token", res.data.access);
-                localStorage.setItem("refresh_token", res.data.refresh);
+        try {
+            // gọi API login
+            const res = await API.post("/users/token/", form);
 
-                setSuccess(true);
-                setTimeout(() => navigate("/"), 1000);
-            })
-            .catch(() => {
-                setError("Sai tên đăng nhập hoặc mật khẩu!");
+            const { access, refresh } = res.data;
+
+            // Lưu token
+            localStorage.setItem("access_token", access);
+            localStorage.setItem("refresh_token", refresh);
+
+            // Gọi API /me để lấy thông tin user
+            const userRes = await API.get("/users/me/", {
+                headers: { Authorization: `Bearer ${access}` },
             });
+
+            localStorage.setItem("user", JSON.stringify(userRes.data));
+
+            setSuccess(true);
+            setTimeout(() => navigate("/"), 1000);
+        } catch (err) {
+            console.error(err);
+            setError("Sai tên đăng nhập hoặc mật khẩu!");
+        }
     };
 
     return (

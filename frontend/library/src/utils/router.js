@@ -8,6 +8,7 @@ export const ROUTER = {
         LOGIN: '/dang-nhap',
         REGISTER: '/dang-ky',
         ACCOUNT: '/thong-tin-ca-nhan',
+        FORBBIDDEN: '/403',
     },
     ADMIN: {
         ROOT: "/admin",

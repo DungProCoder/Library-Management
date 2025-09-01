@@ -2,11 +2,12 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from ...serializers import BorrowRecordSerializer
 from ...models import Book, BorrowRecord
+from ...permissions import IsAdminUser
 from django.utils import timezone
 
 class BorrowBookView(generics.CreateAPIView):
     serializer_class = BorrowRecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def post(self, request, *args, **kwargs):
         book_id = request.data.get('book_id')

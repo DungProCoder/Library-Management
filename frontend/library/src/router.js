@@ -1,5 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import { ROUTER } from "./utils/router";
+
+// Guards
+import { PrivateRoute, AdminRoute } from "./utils/guards";
+
+// Pages
 import MasterLayout from "./pages/client/theme/master";
 import HomePage from "./pages/client/home";
 import Category from "./pages/client/category";
@@ -13,6 +18,7 @@ import Profile from "./pages/client/profile";
 import Info from "./pages/client/profile/info";
 import Account from "./pages/client/profile/account";
 
+// Admin
 import AdminLayout from "./pages/admin/theme/master";
 import AdminDashboard from "./pages/admin/dashboard";
 
@@ -29,41 +35,52 @@ import BorrowRecordList from "./pages/admin/borrow";
 import UserList from "./pages/admin/user";
 import UserEdit from "./pages/admin/user/edit";
 
+// Common pages
+import Forbidden from "./pages/client/errors/forbidden";
+
 const renderUserRouter = () => {
     return (
         <Route path={ROUTER.USER.ROOT} element={<MasterLayout />}>
             <Route index element={<HomePage />} />
             <Route path={ROUTER.USER.CATEGORY} element={<Category />} />
             <Route path={ROUTER.USER.BOOK_DETAIL} element={<BookDetail />} />
-            <Route path={ROUTER.USER.CART} element={<Cart />} />
-            <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
             <Route path={ROUTER.USER.LOGIN} element={<Login />} />
             <Route path={ROUTER.USER.REGISTER} element={<Register />} />
 
-            <Route path={ROUTER.USER.ACCOUNT} element={<Profile />}>
-                <Route path="thong-tin-lien-he" element={<Info />} />
-                <Route path="tai-khoan" element={<Account />} />
+            {/* Private user */}
+            <Route element={<PrivateRoute />}>
+                <Route path={ROUTER.USER.CART} element={<Cart />} />
+                <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
+                <Route path={ROUTER.USER.ACCOUNT} element={<Profile />}>
+                    <Route path="thong-tin-lien-he" element={<Info />} />
+                    <Route path="tai-khoan" element={<Account />} />
+                </Route>
             </Route>
+
+            {/* Common */}
+            <Route path="/403" element={<Forbidden />} />
         </Route>
     );
 }
 
 const renderAdminRouter = () => {
     return (
-        <Route path={ROUTER.ADMIN.ROOT} element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path={ROUTER.ADMIN.BOOKS} element={<BookList />} />
-            <Route path={ROUTER.ADMIN.BOOK_ADD} element={<BookAdd />} />
-            <Route path={ROUTER.ADMIN.BOOK_EDIT} element={<BookEdit />} />
+        <Route element={<AdminRoute />}>
+            <Route path={ROUTER.ADMIN.ROOT} element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path={ROUTER.ADMIN.BOOKS} element={<BookList />} />
+                <Route path={ROUTER.ADMIN.BOOK_ADD} element={<BookAdd />} />
+                <Route path={ROUTER.ADMIN.BOOK_EDIT} element={<BookEdit />} />
 
-            <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
-            <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />
-            <Route path={ROUTER.ADMIN.CATEGORY_EDIT} element={<CategoryEdit />} />
+                <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
+                <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />
+                <Route path={ROUTER.ADMIN.CATEGORY_EDIT} element={<CategoryEdit />} />
 
-            <Route path={ROUTER.ADMIN.USERS} element={<UserList />} />
-            <Route path={ROUTER.ADMIN.EDIT} element={<UserEdit />} />
+                <Route path={ROUTER.ADMIN.USERS} element={<UserList />} />
+                <Route path={ROUTER.ADMIN.EDIT} element={<UserEdit />} />
 
-            <Route path={ROUTER.ADMIN.BORROW} element={<BorrowRecordList />} />
+                <Route path={ROUTER.ADMIN.BORROW} element={<BorrowRecordList />} />
+            </Route>
         </Route>
     )
 }

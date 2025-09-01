@@ -16,4 +16,7 @@ urlpatterns = [
     path('list/', views.UserListView.as_view(), name='user_list'),
     path('edit/<int:pk>/', views.UserRetrieveUpdateDestroyView.as_view(), name='user_edit'),
     path('block/<int:pk>/', views.BlockUserView.as_view(), name='block_user'),
+
+    # Me
+    path('me/', views.MeView.as_view(), name='me'),
 ]

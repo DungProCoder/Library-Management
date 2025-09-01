@@ -1,9 +1,10 @@
 from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
+from .permissions import IsAdminUser
 from .serializers import RegisterSerializer, UserSerializer
 from .models import User
 
@@ -11,6 +12,7 @@ from .models import User
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
 
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -23,16 +25,15 @@ class UserProfileView(APIView):
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    permission_classes = [IsAdminUser]
 
 class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 class BlockUserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def put(self, request, pk):
         try:
@@ -64,3 +65,18 @@ class BlockUserView(APIView):
         )
 
         return Response({"message": "Thành công"}, status=status.HTTP_200_OK)
+
+# Me at authorize
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "is_superuser": user.is_superuser,
+            "role": "admin" if user.is_staff else "user",
+            "avatar": user.avatar.url if hasattr(user, "avatar") and user.avatar else None
+        })
