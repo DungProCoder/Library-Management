@@ -2,7 +2,7 @@ export const ROUTER = {
     USER: {
         HOME: '/',
         CATEGORY: '/the-loai',
-        BOOK_DETAIL: '/chi-tiet-sach',
+        BOOK_DETAIL: '/:isbn',
         CART: '/gio-hang',
         CHECKOUT: '/thanh-toan',
         LOGIN: '/dang-nhap',

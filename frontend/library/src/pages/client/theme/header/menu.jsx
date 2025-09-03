@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
     Container,
@@ -8,8 +8,10 @@ import {
     MenuItem
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import API from "../../../../servers/api";
 
 const NavbarMenu = () => {
+    const [categories, setCategories] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentMenu, setCurrentMenu] = useState(null);
 
@@ -22,6 +24,19 @@ const NavbarMenu = () => {
         setAnchorEl(null);
         setCurrentMenu(null);
     };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await API.get("/client/categories/");
+            setCategories(response.data);
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     return (
         <>
@@ -62,18 +77,11 @@ const NavbarMenu = () => {
                         <MenuItem component={Link} to="/the-loai" onClick={handleCloseMenu}>
                             Tất cả thể loại
                         </MenuItem>
-                        <MenuItem component={Link} to="/category/tieu-thuyet" onClick={handleCloseMenu}>
-                            Tiểu thuyết
-                        </MenuItem>
-                        <MenuItem component={Link} to="/category/truyen-tranh" onClick={handleCloseMenu}>
-                            Truyện tranh
-                        </MenuItem>
-                        <MenuItem component={Link} to="/category/kinh-te" onClick={handleCloseMenu}>
-                            Kinh tế
-                        </MenuItem>
-                        <MenuItem component={Link} to="/category/khoa-hoc" onClick={handleCloseMenu}>
-                            Khoa học
-                        </MenuItem>
+                        {categories.map((category) => (
+                            <MenuItem component={Link} to={`/the-loai/${category.slug}`} key={category.id} onClick={handleCloseMenu}>
+                                {category.name}
+                            </MenuItem>
+                        ))}
                     </Menu>
 
                     {/* Tuyển chọn */}

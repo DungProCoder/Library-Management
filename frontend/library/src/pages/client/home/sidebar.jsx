@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     List,
@@ -10,8 +10,10 @@ import {
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
+import API from "../../../servers/api";
 
 const Sidebar = () => {
+    const [categories, setCategories] = useState([]);
     const [openMenus, setOpenMenus] = useState({
         theloai: false,
         hubsach: false,
@@ -23,6 +25,19 @@ const Sidebar = () => {
             [menu]: !prev[menu]
         }));
     };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await API.get("/client/categories/");
+            setCategories(response.data);
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     return (
         <>
@@ -45,18 +60,11 @@ const Sidebar = () => {
                                 <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai">
                                     <ListItemText primary="Tất cả thể loại" />
                                 </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai/tieu-thuyet">
-                                    <ListItemText primary="Tiểu thuyết" />
-                                </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai/truyen-tranh">
-                                    <ListItemText primary="Truyện tranh" />
-                                </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai/kinh-te">
-                                    <ListItemText primary="Kinh tế" />
-                                </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai/khoa-hoc">
-                                    <ListItemText primary="Khoa học" />
-                                </ListItemButton>
+                                {categories.map((category) => (
+                                    <ListItemButton sx={{ pl: 4 }} component={Link} to={`/the-loai/${category.slug}`} key={category.id}>
+                                        <ListItemText primary={category.name} />
+                                    </ListItemButton>
+                                ))}
                             </List>
                         </Collapse>
 

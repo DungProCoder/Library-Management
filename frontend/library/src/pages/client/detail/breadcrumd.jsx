@@ -1,10 +1,10 @@
 import { memo } from 'react';
 import BreadcrumbsComponent from '../components/breadcrumbs';
 
-const Breadcrumb = () => {
+const Breadcrumb = ({ book }) => {
     const breadcrumbItems = [
         { label: "Trang Chủ", href: "/" },
-        { label: "Chi tiết sách", href: "/chi-tiet-sach" }
+        { label: `${book.title}`, href: `${book.isbn}` }
     ];
 
     return (

@@ -9,15 +9,19 @@ import {
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-const Book = () => {
+const Book = ({ book }) => {
+    const avgRating = Number(book.avg_rating) || 0;
+    const remainder = avgRating % 1;
+    const decimal = remainder === 0 ? 0 : 1 - remainder;
+
     return (
         <>
             <Grid container spacing={2}>
                 {/* Ảnh bìa */}
-                <Grid size={4} item xs={12} md={4}>
+                <Grid size={4}>
                     <Box
                         component="img"
-                        src="https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509.jpg"
+                        src={book.image}
                         alt="Book cover"
                         sx={{
                             width: "100%",
@@ -28,15 +32,15 @@ const Book = () => {
                 </Grid>
 
                 {/* Nội dung sách */}
-                <Grid size={8} item xs={12} md={8}>
+                <Grid size={8}>
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
-                        Nghiêm Túc Thì... Tôi Chỉ Đùa Thôi
+                        {book.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         Đánh giá:
-                        <Rating value={4.5} precision={0.5} readOnly size="small" />
+                        <Rating value={Number(book.avg_rating) || 0} precision={decimal} readOnly size="small" />
                         <Typography component="span" fontWeight="medium">
-                            (120)
+                            ({book.count_rating})
                         </Typography>
                     </Typography>
 
@@ -50,7 +54,7 @@ const Book = () => {
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1, mb: 4 }}>
-                        <Chip label="Thể Loại: Tôn giáo triết học tâm lý" variant="outlined" />
+                        <Chip label={`Thể loại: ${book.category ? book.category.name : ""}`} variant="outlined" />
                         <Chip label="Hub Sách: Sct Bookbus, Sct Tuyển chọn" variant="outlined" />
                     </Box>
                 </Grid>

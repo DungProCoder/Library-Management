@@ -2,17 +2,13 @@ from rest_framework import generics, permissions
 from ...serializers import BookSerializer
 from ...models import Book
 
-class BookListCreateView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()[:16]
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
 
-    def perform_create(self, serializer):
-        if self.request.user.role != 'admin':
-            raise PermissionError("Bạn không có quyền thêm sách")
-        serializer.save()
-
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'isbn'

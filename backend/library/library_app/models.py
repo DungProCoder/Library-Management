@@ -43,6 +43,10 @@ class Book(models.Model):
             return round(sum([r.rate for r in ratings]) / ratings.count(), 1)
         return 0
     
+    @property
+    def count_rating(self):
+        return self.ratings.count()
+    
 class Location(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField()
@@ -56,23 +60,47 @@ class LocatedBook(models.Model):
 
     def __str__(self):
         return f"{self.book.title} - {self.location}"
+    
+class BorrowRequest(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title}"
 
 
 class BorrowRecord(models.Model):
     STATUS_CHOICES = (
         ('borrowing', 'Borrowing'),
         ('returned', 'Returned'),
+        ('overdue', 'Overdue'),
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(null=True, blank=True)
+    due_date = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='borrowing')
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
+    
+class BookRecordItem(models.Model):
+    borrow_record = models.ForeignKey(BorrowRecord, on_delete=models.CASCADE, related_name='items')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.book.title} ({self.quantity})"
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratings")

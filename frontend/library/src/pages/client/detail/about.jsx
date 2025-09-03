@@ -6,7 +6,7 @@ import {
     Tab
 } from '@mui/material';
 
-const About = () => {
+const About = ({ book }) => {
     const [tab, setTab] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -25,7 +25,7 @@ const About = () => {
             <Box sx={{ mt: 2 }}>
                 {tab === 0 && (
                     <Typography variant="body1" color="text.primary">
-                        Đây là phần chi tiết của sách (ví dụ: Tác giả, Năm xuất bản, Nhà xuất bản, ISBN...).
+                        {book.description}
                     </Typography>
                 )}
                 {tab === 1 && (
