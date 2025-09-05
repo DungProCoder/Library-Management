@@ -19,15 +19,18 @@ const RatingForm = ({ book }) => {
 
     const [userRating, setUserRating] = useState(null);
 
+    const userId = user && typeof user === "object" ? user.id : null;
+    const bookId = book?.id ?? null;
+
     useEffect(() => {
         const fetchUserRating = async () => {
-            if (!user || !book?.id) return;
+            if (!userId || !bookId) return;
 
             try {
-                const response = await API.get(`/client/books/${book.id}/rating/`);
+                const response = await API.get(`/client/user/books/${bookId}/rated/`);
                 setUserRating(response.data);
             } catch (error) {
-                if (error.response && error.response.status === 404) {
+                if (error.response && error.response?.status === 404) {
                     setUserRating(null);
                 } else {
                     console.error('Failed to fetch user rating:', error);
@@ -36,7 +39,7 @@ const RatingForm = ({ book }) => {
 
         };
         fetchUserRating();
-    }, [user, book?.id]);
+    }, [userId, bookId]);
 
     const handleRatingSubmit = async (e) => {
         e.preventDefault();
@@ -62,7 +65,7 @@ const RatingForm = ({ book }) => {
             {user ? (
                 userRating ? (
                     <Alert severity="info">
-                        📌 Bạn đã đánh giá sách này: {userRating.rate}⭐ - "{userRating.comment}"
+                        📌 Bạn đã đánh giá sách này!
                     </Alert>
                 ) : (
                     <>

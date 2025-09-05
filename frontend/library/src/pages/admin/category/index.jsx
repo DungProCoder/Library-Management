@@ -116,7 +116,7 @@ const CategoryList = () => {
                 </Button>
             </Box>
 
-            <Box sx={{ height: 400, width: "100%" }}>
+            <Box sx={{ height: 422, width: "100%" }}>
                 <DataGrid
                     rows={categories}
                     columns={columns}

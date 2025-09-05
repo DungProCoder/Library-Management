@@ -11,9 +11,11 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
 import API from "../../../servers/api";
+import { useCategory } from "../context/CategoryContext";
 
 const Sidebar = () => {
     const [categories, setCategories] = useState([]);
+    const { setSelectedCategory } = useCategory();
     const [openMenus, setOpenMenus] = useState({
         theloai: false,
         hubsach: false,
@@ -29,7 +31,7 @@ const Sidebar = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/client/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
@@ -61,7 +63,13 @@ const Sidebar = () => {
                                     <ListItemText primary="Tất cả thể loại" />
                                 </ListItemButton>
                                 {categories.map((category) => (
-                                    <ListItemButton sx={{ pl: 4 }} component={Link} to={`/the-loai/${category.slug}`} key={category.id}>
+                                    <ListItemButton
+                                        sx={{ pl: 4 }}
+                                        component={Link}
+                                        to="/the-loai"
+                                        key={category.id}
+                                        onClick={() => setSelectedCategory(category.id)}
+                                    >
                                         <ListItemText primary={category.name} />
                                     </ListItemButton>
                                 ))}

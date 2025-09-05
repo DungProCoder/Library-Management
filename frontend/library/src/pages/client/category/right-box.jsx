@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import {
     Paper,
     Typography,
@@ -7,25 +7,25 @@ import {
     ListItemText,
     Divider,
 } from "@mui/material";
-
-const CATEGORIES = [
-    "Tuyển tập",
-    "Tiểu thuyết",
-    "Truyện ngắn",
-    "Thơ",
-    "Tản văn - Tùy bút - Tiểu luận văn học",
-    "Tiểu sử - Danh nhân - Phóng sự",
-    "Văn hoá - Địa sử - Nhân học - Du lịch",
-    "Tôn giáo - Triết học - Tâm lý",
-    "Kiến trúc - Nghệ thuật",
-    "Chính trị - Luật pháp",
-    "Đời sống cá nhân - Gia đình",
-    "Kinh tế - Lãnh đạo - Quản lý",
-    "Khoa học tự nhiên",
-];
+import API from "../../../servers/api";
+import { useCategory } from "../context/CategoryContext";
 
 const LeftBox = () => {
-    const [activeCat, setActiveCat] = useState(CATEGORIES[0]);
+    const [categories, setCategories] = useState([]);
+    const { selectedCategory, setSelectedCategory } = useCategory();
+
+    const fetchCategories = async () => {
+        try {
+            const response = await API.get("/client/categories/");
+            setCategories(response.data.results);
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     return (
         <>
@@ -46,12 +46,15 @@ const LeftBox = () => {
                 </Typography>
                 <Divider sx={{ mb: 1 }} />
                 <List disablePadding>
-                    {CATEGORIES.map((c) => {
-                        const active = c === activeCat;
+                    {categories.map((c) => {
+                        const active = c.id === selectedCategory;
                         return (
                             <ListItemButton
-                                key={c}
-                                onClick={() => setActiveCat(c)}
+                                key={c.id}
+                                selected={active}
+                                onClick={() => {
+                                    setSelectedCategory(c.id);
+                                }}
                                 sx={{
                                     borderRadius: 2,
                                     mb: 0.5,
@@ -65,7 +68,7 @@ const LeftBox = () => {
                                         fontWeight: active ? 600 : 400,
                                         lineHeight: 1.3,
                                     }}
-                                    primary={c}
+                                    primary={c.name}
                                 />
                             </ListItemButton>
                         );

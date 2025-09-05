@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import API from "../../../../servers/api";
+import { useCategory } from "../../context/CategoryContext";
 
 const NavbarMenu = () => {
     const [categories, setCategories] = useState([]);
+    const { setSelectedCategory } = useCategory();
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentMenu, setCurrentMenu] = useState(null);
 
@@ -28,7 +30,7 @@ const NavbarMenu = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/client/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
@@ -74,11 +76,26 @@ const NavbarMenu = () => {
                             onMouseLeave: handleCloseMenu
                         }}
                     >
-                        <MenuItem component={Link} to="/the-loai" onClick={handleCloseMenu}>
+                        <MenuItem
+                            component={Link}
+                            to="/the-loai/"
+                            onClick={() => {
+                                setSelectedCategory(null);
+                                handleCloseMenu();
+                            }}
+                        >
                             Tất cả thể loại
                         </MenuItem>
                         {categories.map((category) => (
-                            <MenuItem component={Link} to={`/the-loai/${category.slug}`} key={category.id} onClick={handleCloseMenu}>
+                            <MenuItem
+                                key={category.id}
+                                component={Link}
+                                to="/the-loai/"
+                                onClick={() => {
+                                    setSelectedCategory(category.id);
+                                    handleCloseMenu();
+                                }}
+                            >
                                 {category.name}
                             </MenuItem>
                         ))}

@@ -17,8 +17,8 @@ const Book = () => {
 
     const fetchBooks = async () => {
         try {
-            const response = await API.get("/client/books/");
-            setBooks(response.data);
+            const response = await API.get("/client/books/home/");
+            setBooks(response.data.results);
         } catch (error) {
             console.error("Failed to fetch books:", error);
         }
@@ -72,7 +72,7 @@ const Book = () => {
                                     <CardContent>
                                         <Typography variant="body2">{book.title}</Typography>
                                         <Typography variant="caption" color="text.secondary">
-                                            <Rating value={4.5} precision={0.5} readOnly size="small" />
+                                            <Rating value={Number(book.avg_rating)} precision={5 - Number(book.avg_rating)} readOnly size="small" />
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>

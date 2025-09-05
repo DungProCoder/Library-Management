@@ -15,18 +15,29 @@ import Rating from './rating';
 
 const BookDetail = () => {
     const { isbn } = useParams();
+    const [ratingBooks, setRatingBooks] = useState([]);
     const [book, setBook] = useState(null);
 
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                const response = await API.get(`/client/books/${isbn}`);
-                setBook(response.data[0]);
+                const response = await API.get(`/client/books/${isbn}`);                
+                setBook(response.data);
             } catch (error) {
                 console.error('Failed to fetch book:', error);
             }
         };
+
+        const fetchRatingBooks = async () => {
+            try {
+                const response = await API.get(`/client/books/${isbn}/rating/`);
+                setRatingBooks(response.data);
+            } catch (error) {
+                console.error("Failed to fetch books:", error);
+            }
+        };
         fetchBook();
+        fetchRatingBooks();
     }, [isbn]);
 
     if (!book) return <p>Loading...</p>;
@@ -43,7 +54,7 @@ const BookDetail = () => {
                         <Book book={book} />
 
                         {/* About Book */}
-                        <About book={book} />
+                        <About book={book} ratingBooks={ratingBooks} />
 
                         {/* Rating */}
                         <Rating book={book} />

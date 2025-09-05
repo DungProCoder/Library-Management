@@ -8,8 +8,11 @@ import LeftBox from './left-box';
 import RightBox from './right-box';
 import Breadcrumb from './breadcrumb';
 import Banner from './banner';
+import { useCategory } from '../context/CategoryContext';
 
 const Category = () => {
+    const { selectedCategory } = useCategory();
+
     return (
         <>
             <Box sx={{ minHeight: "100vh", pb: 6 }}>
@@ -21,10 +24,10 @@ const Category = () => {
 
                 <Container>
                     <Grid container spacing={3}>
-                        <Grid size={8} item xs={12} md={9}>
-                            <LeftBox />
+                        <Grid size={8}>
+                            <LeftBox category={selectedCategory} />
                         </Grid>
-                        <Grid size={4} item xs={12} md={3}>
+                        <Grid size={4}>
                             <RightBox />
                         </Grid>
                     </Grid>

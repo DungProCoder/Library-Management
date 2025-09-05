@@ -78,7 +78,7 @@ const BookAdd = () => {
         formData.append("author", author);
         formData.append("description", description);
         formData.append("quantity", quantity);
-        formData.append("category", category);
+        formData.append("category_id", category);
         if (image) formData.append("image", image);
 
         try {

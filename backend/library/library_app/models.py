@@ -8,8 +8,8 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug or self.name != Category.objects.filter(pk=self.pk).first().name if self.pk else None:
-            self.slug = slugify(self.name)
+        # luôn cập nhật slug từ name
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -55,7 +55,7 @@ const BookList = () => {
                 console.error("Failed to fetch books:", error);
             }
         }
-    }
+    }    
 
     const columns = [
         {
@@ -104,13 +104,22 @@ const BookList = () => {
             headerAlign: "center",
             align: "center",
             valueGetter: (value, row, column, apiRef) => {
-                const categoryId = Number(row.category);
+                const categoryId = Number(row.category.id);
                 const category = categories.find(c => c.id === categoryId);
                 return category ? category.name : "Không xác định";
             },
         },
         { field: "quantity", headerName: "Số lượng", width: 100, headerAlign: "center", align: "center" },
-        { field: "rating", headerName: "Đánh giá", width: 100, headerAlign: "center", align: "center" },
+        {
+            field: "rating",
+            headerName: "Đánh giá",
+            width: 100,
+            headerAlign: "center",
+            align: "center",
+            valueGetter: (value, row, column, apiRef) => {
+                return row.avg_rating ? row.avg_rating : "0";
+            },
+        },
         {
             field: "actions",
             headerName: "Hành động",

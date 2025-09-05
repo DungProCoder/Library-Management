@@ -3,10 +3,13 @@ import {
     Box,
     Typography,
     Tabs,
-    Tab
+    Tab,
+    List,
+    ListItem,
+    Avatar
 } from '@mui/material';
 
-const About = ({ book }) => {
+const About = ({ book, ratingBooks }) => {
     const [tab, setTab] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -18,7 +21,7 @@ const About = ({ book }) => {
             <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
                 <Tabs value={tab} onChange={handleChange}>
                     <Tab label="Chi tiết" />
-                    <Tab label="Đánh giá" />
+                    <Tab label={"Đánh giá (" + book.count_rating + ")"} />
                 </Tabs>
             </Box>
 
@@ -29,9 +32,38 @@ const About = ({ book }) => {
                     </Typography>
                 )}
                 {tab === 1 && (
-                    <Typography variant="body1" color="text.primary">
-                        Đánh giá
-                    </Typography>
+                    <Box>
+                        {ratingBooks && ratingBooks.length > 0 ? (
+                            <List>
+                                {ratingBooks.map((review, index) => (
+                                    <ListItem alignItems="flex-start" key={index} sx={{ mb: 2 }}>
+                                        <Avatar
+                                            alt={review.user.name}
+                                            src={review.user.avatar}
+                                            sx={{ mr: 2 }}
+                                        />
+                                        <Box>
+                                            <Typography variant="subtitle2" fontWeight="bold">
+                                                {review.user.first_name || review.user.last_name ? 
+                                                    `${review.user.last_name} ${review.user.first_name}` : "Ẩn danh"
+                                                }
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {review.comment}
+                                            </Typography>
+                                            <Typography variant="caption" color="text.disabled">
+                                                {new Date(review.date_add).toLocaleDateString("vi-VN")}
+                                            </Typography>
+                                        </Box>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        ) : (
+                            <Typography variant="body2" color="text.secondary">
+                                Chưa có đánh giá nào.
+                            </Typography>
+                        )}
+                    </Box>
                 )}
             </Box>
         </>

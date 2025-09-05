@@ -10,9 +10,9 @@ import {
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Book = ({ book }) => {
-    const avgRating = Number(book.avg_rating) || 0;
-    const remainder = avgRating % 1;
-    const decimal = remainder === 0 ? 0 : 1 - remainder;
+    // const avgRating = Number(book.avg_rating) || 0;
+    // const remainder = avgRating % 1;
+    // const decimal = remainder === 0 ? 0 : 1 - remainder;
 
     return (
         <>
@@ -38,7 +38,7 @@ const Book = ({ book }) => {
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         Đánh giá:
-                        <Rating value={Number(book.avg_rating) || 0} precision={decimal} readOnly size="small" />
+                        <Rating value={Number(book.avg_rating) || 0} precision={5 - Number(book.avg_rating)} readOnly size="small" />
                         <Typography component="span" fontWeight="medium">
                             ({book.count_rating})
                         </Typography>

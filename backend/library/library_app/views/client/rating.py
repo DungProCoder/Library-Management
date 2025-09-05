@@ -24,3 +24,7 @@ class RatingListView(generics.ListAPIView):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
     permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        is_bn = self.kwargs.get('isbn')
+        return Rating.objects.filter(book__isbn=is_bn).order_by('-date_add')
