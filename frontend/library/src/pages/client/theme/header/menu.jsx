@@ -70,6 +70,12 @@ const NavbarMenu = () => {
                         anchorEl={anchorEl}
                         open={currentMenu === "theloai"}
                         autoFocus={false}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 230,
+                                overflow: "auto"
+                            }
+                        }}
                         MenuListProps={{
                             autoFocusItem: false,
                             onMouseEnter: () => { },
@@ -90,7 +96,7 @@ const NavbarMenu = () => {
                             <MenuItem
                                 key={category.id}
                                 component={Link}
-                                to="/the-loai/"
+                                to={`/the-loai/?=${category.slug}`}
                                 onClick={() => {
                                     setSelectedCategory(category.id);
                                     handleCloseMenu();
@@ -102,41 +108,9 @@ const NavbarMenu = () => {
                     </Menu>
 
                     {/* Tuyển chọn */}
-                    <Link to="/tuyen-chon" style={{ textDecoration: "none" }}>
-                        <Button>Tuyển chọn</Button>
+                    <Link to="/dang-ky-muon-sach" style={{ textDecoration: "none" }}>
+                        <Button>Sách đăng ký mượn</Button>
                     </Link>
-
-                    {/* Hub sách */}
-                    <Button
-                        endIcon={<KeyboardArrowDownIcon />}
-                        variant="text"
-                        disableRipple
-                        onMouseEnter={(e) => handleOpenMenu(e, "hubsach")}
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: 'transparent',
-                                color: 'primary.main',
-                            },
-                        }}
-                    >
-                        Trung tâm sách
-                    </Button>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={currentMenu === "hubsach"}
-                        MenuListProps={{
-                            autoFocusItem: false,
-                            onMouseEnter: () => { },
-                            onMouseLeave: handleCloseMenu
-                        }}
-                    >
-                        <MenuItem component={Link} to="/hub/ha-noi" onClick={handleCloseMenu}>
-                            LIBRARY Hà Nội
-                        </MenuItem>
-                        <MenuItem component={Link} to="/hub/ho-chi-minh" onClick={handleCloseMenu}>
-                            LIBRARY Hồ Chí Minh
-                        </MenuItem>
-                    </Menu>
 
                     {/* Hỗ trợ */}
                     <Link to="/ho-tro" style={{ textDecoration: "none" }}>

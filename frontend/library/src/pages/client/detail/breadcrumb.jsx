@@ -4,7 +4,7 @@ import BreadcrumbsComponent from '../components/breadcrumbs';
 const Breadcrumb = ({ book }) => {
     const breadcrumbItems = [
         { label: "Trang Chủ", href: "/" },
-        { label: `${book.title}`, href: `${book.isbn}` }
+        { label: `Sách: ${book.title}`, href: `${book.isbn}` }
     ];
 
     return (

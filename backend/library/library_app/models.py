@@ -47,31 +47,14 @@ class Book(models.Model):
     def count_rating(self):
         return self.ratings.count()
     
-class Location(models.Model):
-    name = models.CharField(max_length=255)
-    address = models.TextField()
-
-    def __str__(self):
-        return self.name
-    
-class LocatedBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.book.title} - {self.location}"
-    
 class BorrowRequest(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
-    )
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    expected_days = models.PositiveIntegerField(default=14)
     date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
@@ -88,7 +71,11 @@ class BorrowRecord(models.Model):
     borrow_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(null=True, blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
+    location = models.CharField(max_length=15, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='borrowing')
 
     def __str__(self):

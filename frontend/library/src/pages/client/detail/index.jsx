@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import API from '../../../servers/api';
-import Breadcrumb from './breadcrumd';
+import Breadcrumb from './breadcrumb';
 import Book from './book';
 import About from './about';
 import Sidebar from './sidebar';

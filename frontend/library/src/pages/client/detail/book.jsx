@@ -8,11 +8,28 @@ import {
     Rating
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import API from '../../../servers/api';
 
 const Book = ({ book }) => {
-    // const avgRating = Number(book.avg_rating) || 0;
-    // const remainder = avgRating % 1;
-    // const decimal = remainder === 0 ? 0 : 1 - remainder;
+    const handleAddToBorrow = async () => {
+        try {
+            await API.post("/client/borrow-requests/", { book_id: book.id });
+            alert("✅ Đã thêm vào giỏ mượn!");
+        } catch (err) {
+            console.error(err);
+            if (err.response && err.response.data) {
+                if (err.response.data.book) {
+                    alert("⚠️ " + err.response.data.book);
+                } else if (err.response.data.limit) {
+                    alert("⚠️ " + err.response.data.limit);
+                } else {
+                    alert("❌ Không thể thêm vào giỏ mượn.");
+                }
+            } else {
+                alert("❌ Có lỗi xảy ra, vui lòng thử lại.");
+            }
+        }
+    }
 
     return (
         <>
@@ -45,7 +62,7 @@ const Book = ({ book }) => {
                     </Typography>
 
                     <Box sx={{ display: "flex", gap: 2, mt: 3, mb: 3 }}>
-                        <Button variant="contained" color="primary" sx={{ borderRadius: 5 }}>
+                        <Button onClick={handleAddToBorrow} variant="contained" color="primary" sx={{ borderRadius: 5 }}>
                             📗 Mượn Sách
                         </Button>
                         <Button variant="outlined" color="danger" sx={{ borderRadius: 5 }}>
@@ -55,7 +72,7 @@ const Book = ({ book }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1, mb: 4 }}>
                         <Chip label={`Thể loại: ${book.category ? book.category.name : ""}`} variant="outlined" />
-                        <Chip label="Hub Sách: Sct Bookbus, Sct Tuyển chọn" variant="outlined" />
+                        <Chip label={`Tác giả: ${book.author ? book.author : ""}`} variant="outlined" />
                     </Box>
                 </Grid>
             </Grid>

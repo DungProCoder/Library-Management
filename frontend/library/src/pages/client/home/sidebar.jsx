@@ -66,34 +66,13 @@ const Sidebar = () => {
                                     <ListItemButton
                                         sx={{ pl: 4 }}
                                         component={Link}
-                                        to="/the-loai"
+                                        to={`/the-loai/?=${category.slug}`}
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
                                     >
                                         <ListItemText primary={category.name} />
                                     </ListItemButton>
                                 ))}
-                            </List>
-                        </Collapse>
-
-                        {/* Tuyển chọn */}
-                        <ListItemButton component={Link} to="/tuyen-chon">
-                            <ListItemText primary="TUYỂN CHỌN" />
-                        </ListItemButton>
-
-                        {/* Hub sách */}
-                        <ListItemButton onClick={() => toggleMenu("hubsach")}>
-                            <ListItemText primary="HUB SÁCH" />
-                            {openMenus.hubsach ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        <Collapse in={openMenus.hubsach} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/hub-sach/ha-noi">
-                                    <ListItemText primary="SCT Hà Nội" />
-                                </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} component={Link} to="/hub-sach/ho-chi-minh">
-                                    <ListItemText primary="SCT Hồ Chí Minh" />
-                                </ListItemButton>
                             </List>
                         </Collapse>
                     </List>

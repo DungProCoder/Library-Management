@@ -8,6 +8,7 @@ import {
     Divider,
 } from "@mui/material";
 import API from "../../../servers/api";
+import { Link } from "react-router-dom";
 import { useCategory } from "../context/CategoryContext";
 
 const LeftBox = () => {
@@ -50,8 +51,10 @@ const LeftBox = () => {
                         const active = c.id === selectedCategory;
                         return (
                             <ListItemButton
+                                component={Link}
                                 key={c.id}
                                 selected={active}
+                                to={`/the-loai/?=${c.slug}`}
                                 onClick={() => {
                                     setSelectedCategory(c.id);
                                 }}

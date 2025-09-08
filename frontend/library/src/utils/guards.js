@@ -4,6 +4,7 @@ import { getUser } from "../servers/auth";
 export const PrivateRoute = () => {
     const user = getUser();
     if (!user) {
+        alert("Vui lòng đăng nhập để truy cập!");
         return <Navigate to="/dang-nhap" replace />;
     }
 

@@ -23,7 +23,7 @@ const CategoryList = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/admin/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }

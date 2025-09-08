@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     Grid,
@@ -15,35 +15,87 @@ import {
     Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import API from "../../../servers/api";
 
-const Address = ({ location, setLocation, handleNext }) => {
+const Address = ({ location, setLocation, handleNext, formData, setFormData }) => {
+    const [loading, setLoading] = useState(false);
+    const [items, setItems] = useState([]);
+
+    const isFormValid = () => {
+        return (
+            formData.first_name.trim() !== "" &&
+            formData.last_name.trim() !== "" &&
+            formData.address.trim() !== "" &&
+            formData.phone.trim() !== "" &&
+            location.trim() !== ""
+        );
+    };
+
+    const handleChange = (field, value) => {
+        setFormData({ ...formData, [field]: value });
+    };
+
+    const fetchBorrowRequests = async () => {
+        try {
+            setLoading(true);
+            const res = await API.get("/client/borrow-requests/");
+            setItems(res.data.results);
+        } catch (err) {
+            console.error("Lỗi khi lấy giỏ mượn:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBorrowRequests();
+    }, []);
+
     return (
         <>
             <Grid container spacing={3}>
                 {/* Form địa chỉ */}
-                <Grid size={8} item xs={12} md={8}>
+                <Grid size={8}>
                     <Paper sx={{ p: 3 }}>
                         <Typography variant="h6" gutterBottom>
-                            Địa chỉ bạn đọc
+                            Thông tin người mượn
                         </Typography>
                         <Grid container spacing={2}>
-                            <Grid size={6} item xs={6}>
-                                <TextField fullWidth label="Họ" required />
+                            <Grid size={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Họ"
+                                    value={formData.last_name}
+                                    onChange={(e) => handleChange("last_name", e.target.value)}
+                                    required
+                                />
                             </Grid>
-                            <Grid size={6} item xs={6}>
-                                <TextField fullWidth label="Tên" required />
+                            <Grid size={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Tên"
+                                    value={formData.first_name}
+                                    onChange={(e) => handleChange("first_name", e.target.value)}
+                                    required
+                                />
                             </Grid>
-                            <Grid size={12} item xs={12}>
-                                <TextField fullWidth label="Địa chỉ đường" required />
+                            <Grid size={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Địa chỉ"
+                                    value={formData.address}
+                                    onChange={(e) => handleChange("address", e.target.value)}
+                                    required
+                                />
                             </Grid>
-                            <Grid size={6} item xs={6}>
-                                <TextField fullWidth label="Tỉnh/Thành phố" required />
-                            </Grid>
-                            <Grid size={6} item xs={6}>
-                                <TextField fullWidth label="Khu vực/Quận" required />
-                            </Grid>
-                            <Grid size={12} item xs={12}>
-                                <TextField fullWidth label="Số điện thoại" required />
+                            <Grid size={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Số điện thoại"
+                                    value={formData.phone}
+                                    onChange={(e) => handleChange("phone", e.target.value)}
+                                    required
+                                />
                             </Grid>
                         </Grid>
 
@@ -60,11 +112,6 @@ const Address = ({ location, setLocation, handleNext }) => {
                                 label="Xe Buýt Sách – Đường sách TP. HCM, Nguyễn Văn Bình, Quận 1"
                             />
                             <FormControlLabel
-                                value="dn"
-                                control={<Radio />}
-                                label="The Books Library & Coffee – Số 12 Cao Thắng, Hải Châu, Đà Nẵng"
-                            />
-                            <FormControlLabel
                                 value="hn"
                                 control={<Radio />}
                                 label="Thư viện Blacasa – Số 6 ngõ 92 Láng Hạ, Đống Đa, Hà Nội"
@@ -74,14 +121,14 @@ const Address = ({ location, setLocation, handleNext }) => {
                 </Grid>
 
                 {/* Sidebar */}
-                <Grid size={4} item xs={12} md={4}>
+                <Grid size={4}>
                     <Accordion defaultExpanded>
                         {/* Header */}
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Box sx={{ display: "flex", flexDirection: "column" }}>
                                 <Typography variant="h6">Tóm tắt yêu cầu mượn</Typography>
                                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                                    1 SÁCH ĐANG ĐĂNG KÝ
+                                    {items.length} SÁCH ĐANG ĐĂNG KÝ
                                 </Typography>
                             </Box>
                         </AccordionSummary>
@@ -89,31 +136,53 @@ const Address = ({ location, setLocation, handleNext }) => {
                         <AccordionDetails>
                             <Divider sx={{ mb: 2 }} />
 
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <img
-                                    src="https://cdn0.fahasa.com/media/catalog/product/i/m/image_139949.jpg"
-                                    alt="Elon Musk"
-                                    style={{ width: 60, height: 90, objectFit: "cover", borderRadius: 8 }}
-                                />
-                                <Box sx={{ ml: 2, flexGrow: 1 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                        Elon Musk: Tesla, SpaceX, and the Quest for a Fantastic Future
-                                    </Typography>
-                                    <Typography variant="caption" color="text.secondary">
-                                        1 Quyển
-                                    </Typography>
+                            {loading ? (
+                                <Typography>Đang tải...</Typography>
+                            ) : items.length === 0 ? (
+                                <Typography>Không có sách đăng ký nào.</Typography>
+                            ) : (
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                                    {items.map((item) => (
+                                        <Box
+                                            key={item.id}
+                                            sx={{ display: "flex", alignItems: "center" }}
+                                        >
+                                            <img
+                                                src={item.book?.image || "https://via.placeholder.com/60x90"}
+                                                alt={item.book?.title}
+                                                style={{
+                                                    width: 60,
+                                                    height: 90,
+                                                    objectFit: "cover",
+                                                    borderRadius: 8,
+                                                }}
+                                            />
+                                            <Box sx={{ display: "flex", flexDirection: "column", ml: 2, flexGrow: 1 }}>
+                                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                                    {item.book?.title}
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary">
+                                                    Số lượng: {item.quantity || 1} quyển
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary">
+                                                    Thời hạn: {item.expected_days} ngày
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                    ))}
                                 </Box>
-                            </Box>
+                            )}
                         </AccordionDetails>
                     </Accordion>
                 </Grid>
 
                 {/* Buttons */}
-                <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
                     <Button
                         variant="contained"
                         onClick={handleNext}
                         sx={{ borderRadius: 10, px: 4 }}
+                        disabled={!isFormValid()}
                     >
                         TIẾP THEO
                     </Button>

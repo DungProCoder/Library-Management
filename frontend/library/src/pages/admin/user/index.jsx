@@ -23,7 +23,7 @@ const UserList = () => {
     const fetchUsers = async () => {
         try {
             const response = await API.get("/users/list/");
-            setUsers(response.data);
+            setUsers(response.data.results);
         } catch (error) {
             console.error(error);
         }

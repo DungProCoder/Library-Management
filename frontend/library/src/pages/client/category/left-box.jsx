@@ -10,10 +10,12 @@ import {
     Card,
     CardMedia,
     CardContent,
+    CardActionArea,
     Button,
     Rating,
     Pagination
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import SortIcon from "@mui/icons-material/Sort";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import API from "../../../servers/api";
@@ -37,7 +39,7 @@ const LeftBox = ({ category }) => {
                 if (category) params.append("category", category);
 
                 // map sortBy to backend ordering param
-                if (sortBy === "rating") params.append("ordering", "-avg_rating");
+                if (sortBy === "rating") params.append("ordering", "-avg_rating_db");
                 else params.append("ordering", "title");
 
                 const response = await API.get(`/client/books/?${params.toString()}`);
@@ -130,51 +132,62 @@ const LeftBox = ({ category }) => {
                                     "&:hover": { transform: "translateY(-4px)", boxShadow: 4 },
                                 }}
                             >
-                                <CardMedia
-                                    component="img"
+                                <CardActionArea
+                                    component={Link}
+                                    to={`/${b.isbn}`}
+                                    disableRipple
                                     sx={{
-                                        height: 210,
-                                        width: "100%",
-                                        objectFit: "cover",
-                                        backgroundColor: "#f5f5f5",
-                                    }}
-                                    image={b.image}
-                                    alt={b.title}
-                                />
-                                <CardContent
-                                    sx={{
-                                        pt: 1.5,
-                                        flexGrow: 1,
-                                        display: "flex",
-                                        flexDirection: "column",
+                                        "&:hover": {
+                                            backgroundColor: "transparent !important",
+                                        },
                                     }}
                                 >
-                                    <Typography
-                                        variant="body1"
-                                        fontWeight={600}
-                                        gutterBottom
+                                    <CardMedia
+                                        component="img"
                                         sx={{
-                                            display: "-webkit-box",
-                                            WebkitLineClamp: 1,
-                                            WebkitBoxOrient: "vertical",
-                                            overflow: "hidden",
+                                            height: 210,
+                                            width: "100%",
+                                            objectFit: "cover",
+                                            backgroundColor: "#f5f5f5",
+                                        }}
+                                        image={b.image}
+                                        alt={b.title}
+                                    />
+                                    <CardContent
+                                        sx={{
+                                            pt: 1.5,
+                                            flexGrow: 1,
+                                            display: "flex",
+                                            flexDirection: "column",
                                         }}
                                     >
-                                        {b.title}
-                                    </Typography>
-                                    <Rating
-                                        name="read-only"
-                                        size="small"
-                                        precision={5 - Number(b.avg_rating)}
-                                        value={b.avg_rating ?? 0}
-                                        readOnly
-                                    />
-                                    <Box sx={{ mt: 1.5 }}>
-                                        <Button variant="contained" size="small" fullWidth>
-                                            ✅ MƯỢN SÁCH
-                                        </Button>
-                                    </Box>
-                                </CardContent>
+                                        <Typography
+                                            variant="body1"
+                                            fontWeight={600}
+                                            gutterBottom
+                                            sx={{
+                                                display: "-webkit-box",
+                                                WebkitLineClamp: 1,
+                                                WebkitBoxOrient: "vertical",
+                                                overflow: "hidden",
+                                            }}
+                                        >
+                                            {b.title}
+                                        </Typography>
+                                        <Rating
+                                            name="read-only"
+                                            size="small"
+                                            precision={5 - Number(b.avg_rating)}
+                                            value={b.avg_rating ?? 0}
+                                            readOnly
+                                        />
+                                        <Box sx={{ mt: 1.5 }}>
+                                            <Button variant="contained" size="small" fullWidth>
+                                                ✅ MƯỢN SÁCH
+                                            </Button>
+                                        </Box>
+                                    </CardContent>
+                                </CardActionArea>
                             </Card>
                         </Grid>
                     ))}

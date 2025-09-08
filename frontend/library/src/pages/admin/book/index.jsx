@@ -25,7 +25,7 @@ const BookList = () => {
     const fetchBooks = async () => {
         try {
             const response = await API.get("/admin/books/");
-            setBooks(response.data);
+            setBooks(response.data.results);
         } catch (error) {
             console.error("Failed to fetch books:", error);
         }
@@ -34,7 +34,7 @@ const BookList = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/admin/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
