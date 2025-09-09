@@ -33,20 +33,21 @@ class BorrowBookView(generics.CreateAPIView):
 class ReturnBookView(generics.UpdateAPIView):
     queryset = BorrowRecord.objects.all()
     serializer_class = BorrowRecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def update(self, request, *args, **kwargs):
-        borrow = self.get_object()
+        instance = self.get_object()
 
-        if borrow.status == 'returned':
-            return Response({"message": "Sách đã được trả"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        borrow.status = 'returned'
-        borrow.return_date = timezone.now()
-        borrow.save()
+        if instance.status != "pending_return":
+            return Response({"detail": "Chỉ xác nhận được đơn đang chờ trả."}, status=status.HTTP_400_BAD_REQUEST)
 
-        book = borrow.book
-        book.quantity += 1
-        book.save()
+        instance.status = "returned"
+        instance.return_date = timezone.now()
 
-        return Response({"message": "Trả sách thành công"}, status=status.HTTP_200_OK)
+        # Cộng lại số lượng sách
+        for item in instance.items.all():
+            item.book.quantity += item.quantity
+            item.book.save()
+
+        instance.save()
+        return Response({"detail": "Xác nhận trả sách thành công."}, status=status.HTTP_200_OK)

@@ -1,6 +1,7 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from ...serializers import BorrowRequestSerializer, BorrowRecordSerializer
 from ...models import BorrowRequest, BorrowRecord
+from rest_framework.response import Response
 
 # Lấy danh sách + thêm mới sách vào giỏ
 class BorrowRequestListCreateView(generics.ListCreateAPIView):
@@ -21,7 +22,8 @@ class BorrowRequestDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return BorrowRequest.objects.filter(user=self.request.user)
-    
+
+# Lấy danh sách mượn sách trong giỏ
 class BorrowRecordCreateView(generics.ListCreateAPIView):
     serializer_class = BorrowRecordSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -31,3 +33,22 @@ class BorrowRecordCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+# Trả sách
+class ReturnBookView(generics.UpdateAPIView):
+    queryset = BorrowRecord.objects.all()
+    serializer_class = BorrowRecordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.user != request.user:
+            return Response({"detail": "Bạn không có quyền trả đơn mượn này."}, status=status.HTTP_403_FORBIDDEN)
+
+        if instance.status != "borrowing":
+            return Response({"detail": "Trạng thái không hợp lệ để trả sách."}, status=status.HTTP_400_BAD_REQUEST)
+
+        instance.status = "pending_return"
+        instance.save()
+        return Response({"detail": "Yêu cầu trả sách đã được gửi, chờ admin xác nhận."}, status=status.HTTP_200_OK)

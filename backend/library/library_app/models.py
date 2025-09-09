@@ -63,6 +63,7 @@ class BorrowRequest(models.Model):
 class BorrowRecord(models.Model):
     STATUS_CHOICES = (
         ('borrowing', 'Borrowing'),
+        ('pending_return', 'Pending Return'),
         ('returned', 'Returned'),
         ('overdue', 'Overdue'),
     )
@@ -76,7 +77,7 @@ class BorrowRecord(models.Model):
     address = models.TextField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     location = models.CharField(max_length=15, null=True, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='borrowing')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='borrowing')
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"

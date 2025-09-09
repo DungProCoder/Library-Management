@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
     { text: "Tài khoản của tôi", path: "/thong-tin-ca-nhan/thong-tin-lien-he" },
-    { text: "Đơn mượn sách của tôi", path: "/thong-tin-ca-nhan/sach-da-muon" },
+    { text: "Sách đã mượn của tôi", path: "/thong-tin-ca-nhan/sach-da-muon" },
     { text: "Danh sách yêu thích của tôi", path: "/thong-tin-ca-nhan/sach-yeu-thich" },
     { text: "Cập nhật tài khoản", path: "/thong-tin-ca-nhan/tai-khoan" },
 ];

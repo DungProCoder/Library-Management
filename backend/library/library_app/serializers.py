@@ -72,9 +72,9 @@ class BorrowRecordSerializer(serializers.ModelSerializer):
         model = BorrowRecord
         fields = [
             "id", "user", "first_name", "last_name", "address", "phone",
-            "location", "borrow_date", "due_date", "status", "items"
+            "location", "borrow_date", "return_date", "due_date", "status", "items"
         ]
-        read_only_fields = ["user", "borrow_date", "status", "items"]
+        read_only_fields = ["user", "borrow_date", "items"]
 
     def create(self, validated_data):
         user = self.context["request"].user

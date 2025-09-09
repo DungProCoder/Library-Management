@@ -16,6 +16,7 @@ import Register from "./pages/client/auth/register";
 
 import Profile from "./pages/client/profile";
 import Info from "./pages/client/profile/info";
+import BorrowedList from "./pages/client/profile/borrowed";
 import Account from "./pages/client/profile/account";
 
 // Admin
@@ -53,6 +54,7 @@ const renderUserRouter = () => {
                 <Route path={ROUTER.USER.CHECKOUT} element={<Checkout />} />
                 <Route path={ROUTER.USER.ACCOUNT} element={<Profile />}>
                     <Route path="thong-tin-lien-he" element={<Info />} />
+                    <Route path="sach-da-muon" element={<BorrowedList />} />
                     <Route path="tai-khoan" element={<Account />} />
                 </Route>
             </Route>
