@@ -52,3 +52,25 @@ class ReturnBookView(generics.UpdateAPIView):
         instance.status = "pending_return"
         instance.save()
         return Response({"detail": "Yêu cầu trả sách đã được gửi, chờ admin xác nhận."}, status=status.HTTP_200_OK)
+
+class CheckActiveBorrowView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        active_record = BorrowRecord.objects.filter(
+            user=user
+        ).exclude(status="returned").first()
+
+        if active_record:
+            return Response({
+                "canBorrow": False,
+                "message": "Bạn đang có đơn mượn chưa hoàn trả lại sách. Hãy trả đơn mượn để có tiếp tục mượn sách!",
+                "record_id": active_record.id,
+                "status": active_record.status
+            })
+
+        return Response({
+            "canBorrow": True,
+            "message": "Bạn có thể mượn sách."
+        })

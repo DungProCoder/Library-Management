@@ -100,7 +100,7 @@ const AccountPage = () => {
                 formData.append("confirm_password", form.confirmPassword);
             }
 
-            await API.put(`/users/edit/${form.id}/`, formData, {
+            await API.put(`/users/update/${form.id}/`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,

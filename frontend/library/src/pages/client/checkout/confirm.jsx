@@ -5,12 +5,19 @@ import API from "../../../servers/api";
 const StepTwoConfirm = ({ handleBack, formData, location }) => {
     const handleConfirm = async () => {
         try {
+            // 1. Kiểm tra trạng thái mượn
+            const res = await API.get("/client/borrow-records/check-active/");
+            if (!res.data.canBorrow) {
+                alert("⚠️ " + res.data.message);
+                return;
+            }
+            
             await API.post("/client/borrow-records/", {
                 ...formData,
                 location,
             });
             alert("✅ Mượn sách thành công!");
-            window.location.href = "/";
+            window.location.href = "/thong-tin-ca-nhan/sach-da-muon";
         } catch (err) {
             console.error(err);
             alert("❌ Có lỗi xảy ra, vui lòng thử lại.");

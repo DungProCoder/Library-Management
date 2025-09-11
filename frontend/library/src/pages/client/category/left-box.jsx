@@ -57,6 +57,26 @@ const LeftBox = ({ category }) => {
         fetchBooks();
     }, [page, limit, category, sortBy]);
 
+    const handleAddToBorrow = async (bookId) => {
+        try {
+            await API.post("/client/borrow-requests/", { book_id: bookId });
+            alert("✅ Đã thêm vào giỏ mượn!");
+        } catch (err) {
+            console.error(err);
+            if (err.response && err.response.data) {
+                if (err.response.data.book) {
+                    alert("⚠️ " + err.response.data.book);
+                } else if (err.response.data.limit) {
+                    alert("⚠️ " + err.response.data.limit);
+                } else {
+                    alert("❌ Không thể thêm vào giỏ mượn.");
+                }
+            } else {
+                alert("❌ Có lỗi xảy ra, vui lòng thử lại.");
+            }
+        }
+    }
+
     return (
         <>
             {/* Sort / Limit bar */}
@@ -182,8 +202,18 @@ const LeftBox = ({ category }) => {
                                             readOnly
                                         />
                                         <Box sx={{ mt: 1.5 }}>
-                                            <Button variant="contained" size="small" fullWidth>
-                                                ✅ MƯỢN SÁCH
+                                            <Button
+                                                variant="contained"
+                                                size="small"
+                                                fullWidth
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    handleAddToBorrow(b.id);
+                                                }}
+                                                disabled={b.quantity === 0}
+                                            >
+                                                {b.quantity === 0 ? "ĐÃ HÉT SÁCH" : "MƯỢN SÁCH NGAY"}
                                             </Button>
                                         </Box>
                                     </CardContent>

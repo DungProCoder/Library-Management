@@ -13,6 +13,7 @@ import os.path
 import environ
 from pathlib import Path
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,7 +158,7 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
@@ -183,3 +184,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+CELERY_BEAT_SCHEDULE = {
+    "send-overdue-emails-every-midnight": {
+        "task": "library_app.tasks.send_overdue_emails",
+        "schedule": crontab(minute=0, hour=0),  # chạy 0h mỗi ngày
+    },
+}

@@ -1,6 +1,6 @@
 from django.urls import path
 from .book import BookListCreateView, BookRetrieveUpdateDestroyView
-from .borrow import BorrowBookView, ReturnBookView
+from .borrow import BorrowRecordListView, ReturnBookView, OverdueEmailView
 from .category import CategoryListCreateView, CategoryDetailView
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('books/<int:pk>/', BookRetrieveUpdateDestroyView.as_view(), name='book_detail'),
 
     # Borrow URLs
-    path('borrow/', BorrowBookView.as_view(), name='borrow_book'),
+    path('borrow/', BorrowRecordListView.as_view(), name='borrow_book_list'),
     path('return/<int:pk>/', ReturnBookView.as_view(), name='return_book'),
+    path("send-overdue-emails/", OverdueEmailView.as_view(), name="send-overdue-emails"),
 ]

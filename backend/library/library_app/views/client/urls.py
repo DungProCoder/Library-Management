@@ -1,7 +1,7 @@
 from django.urls import path
 from .book import BookListView, BookDetailView, BookListAtCategoryView
 from .category import CategoryListView
-from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, BorrowRecordCreateView, ReturnBookView
+from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, BorrowRecordCreateView, ReturnBookView, CheckActiveBorrowView
 from .rating import RatingBookView, RatingListView, UserBookRatingView
 
 urlpatterns = [
@@ -20,6 +20,7 @@ urlpatterns = [
     # borrow-record
     path('borrow-records/', BorrowRecordCreateView.as_view(), name='borrow_record_create'),
     path("borrow-records/<int:pk>/return/", ReturnBookView.as_view(), name="return-book"),
+    path("borrow-records/check-active/", CheckActiveBorrowView.as_view(), name="check-active-borrow"),
 
     # Rating
     path('rating/', RatingBookView.as_view(), name='rating_book'),

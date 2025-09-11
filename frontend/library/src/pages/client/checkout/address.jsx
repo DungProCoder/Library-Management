@@ -27,6 +27,7 @@ const Address = ({ location, setLocation, handleNext, formData, setFormData }) =
             formData.last_name.trim() !== "" &&
             formData.address.trim() !== "" &&
             formData.phone.trim() !== "" &&
+            items.length > 0 &&
             location.trim() !== ""
         );
     };

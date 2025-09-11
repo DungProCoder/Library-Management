@@ -62,8 +62,14 @@ const Book = ({ book }) => {
                     </Typography>
 
                     <Box sx={{ display: "flex", gap: 2, mt: 3, mb: 3 }}>
-                        <Button onClick={handleAddToBorrow} variant="contained" color="primary" sx={{ borderRadius: 5 }}>
-                            📗 Mượn Sách
+                        <Button
+                            onClick={handleAddToBorrow}
+                            variant="contained"
+                            color="primary"
+                            sx={{ borderRadius: 5 }}
+                            disabled={book.quantity === 0}
+                        >
+                            {book.quantity === 0 ? "📕 Hết Sách" : "📗 Mượn Sách"}
                         </Button>
                         <Button variant="outlined" color="danger" sx={{ borderRadius: 5 }}>
                             <FavoriteBorderIcon />
