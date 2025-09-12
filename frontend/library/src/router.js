@@ -8,6 +8,7 @@ import { PrivateRoute, AdminRoute } from "./utils/guards";
 import MasterLayout from "./pages/client/theme/master";
 import HomePage from "./pages/client/home";
 import Category from "./pages/client/category";
+import Search from "./pages/client/search";
 import BookDetail from "./pages/client/detail";
 import Cart from "./pages/client/cart";
 import Checkout from "./pages/client/checkout";
@@ -44,6 +45,7 @@ const renderUserRouter = () => {
         <Route path={ROUTER.USER.ROOT} element={<MasterLayout />}>
             <Route index element={<HomePage />} />
             <Route path={ROUTER.USER.CATEGORY} element={<Category />} />
+            <Route path={ROUTER.USER.SEARCH} element={<Search />} />
             <Route path={ROUTER.USER.BOOK_DETAIL} element={<BookDetail />} />
             <Route path={ROUTER.USER.LOGIN} element={<Login />} />
             <Route path={ROUTER.USER.REGISTER} element={<Register />} />

@@ -127,7 +127,7 @@ const Header = () => {
                     </ListItemIcon>
                     Cài đặt
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                         <Logout fontSize="small" onClick={handleLogout} />
                     </ListItemIcon>

@@ -107,7 +107,12 @@ const NavbarMenu = () => {
                         ))}
                     </Menu>
 
-                    {/* Tuyển chọn */}
+                    {/* Sách tuyển tập */}
+                    <Link to="/tuyen-tap" style={{ textDecoration: "none" }}>
+                        <Button>Tuyển tập sách</Button>
+                    </Link>
+
+                    {/* Sách đăng ký mượn */}
                     <Link to="/dang-ky-muon-sach" style={{ textDecoration: "none" }}>
                         <Button>Sách đăng ký mượn</Button>
                     </Link>

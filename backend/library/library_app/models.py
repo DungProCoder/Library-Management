@@ -15,6 +15,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class BookSeries(models.Model):
+    title = models.CharField(max_length=255)
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='books/covers/', null=True, blank=True)
@@ -23,6 +30,8 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, unique=True)
     quantity = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    series = models.ForeignKey(BookSeries, on_delete=models.CASCADE, null=True, blank=True, related_name='books')
+    volume_number = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.title

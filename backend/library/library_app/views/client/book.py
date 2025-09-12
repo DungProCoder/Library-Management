@@ -28,3 +28,16 @@ class BookListAtCategoryView(generics.ListAPIView):
     def get_queryset(self):
         qs = Book.objects.all().annotate(avg_rating_db=Avg('ratings__rate'))
         return qs
+
+class BookSearchView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'author']
+    ordering_fields = ['avg_rating_db']
+    ordering = ['avg_rating_db']
+
+    def get_queryset(self):
+        qs = Book.objects.all().annotate(avg_rating_db=Avg('ratings__rate'))
+        return qs

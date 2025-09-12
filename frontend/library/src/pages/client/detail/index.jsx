@@ -31,7 +31,7 @@ const BookDetail = () => {
         const fetchRatingBooks = async () => {
             try {
                 const response = await API.get(`/client/books/${isbn}/rating/`);
-                setRatingBooks(response.data);
+                setRatingBooks(response.data.results);
             } catch (error) {
                 console.error("Failed to fetch books:", error);
             }

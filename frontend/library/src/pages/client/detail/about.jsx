@@ -6,7 +6,8 @@ import {
     Tab,
     List,
     ListItem,
-    Avatar
+    Avatar,
+    Rating
 } from '@mui/material';
 
 const About = ({ book, ratingBooks }) => {
@@ -43,11 +44,19 @@ const About = ({ book, ratingBooks }) => {
                                             sx={{ mr: 2 }}
                                         />
                                         <Box>
-                                            <Typography variant="subtitle2" fontWeight="bold">
-                                                {review.user.first_name || review.user.last_name ? 
-                                                    `${review.user.last_name} ${review.user.first_name}` : "Ẩn danh"
-                                                }
-                                            </Typography>
+                                            <Box display="flex" alignItems="center" gap={1}>
+                                                <Typography variant="subtitle2" fontWeight="bold">
+                                                    {review.user.first_name || review.user.last_name
+                                                        ? `${review.user.last_name} ${review.user.first_name}`
+                                                        : "Ẩn danh"}
+                                                </Typography>
+                                                <Rating
+                                                    value={Number(review.rate) || 0}
+                                                    precision={0.5}
+                                                    readOnly
+                                                    size="small"
+                                                />
+                                            </Box>
                                             <Typography variant="body2" color="text.secondary">
                                                 {review.comment}
                                             </Typography>

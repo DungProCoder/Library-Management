@@ -2,6 +2,7 @@ export const ROUTER = {
     USER: {
         HOME: '/',
         CATEGORY: '/the-loai',
+        SEARCH: '/tim-kiem',
         BOOK_DETAIL: '/:isbn',
         CART: '/dang-ky-muon-sach',
         CHECKOUT: '/tien-hanh-muon-sach',

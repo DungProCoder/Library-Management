@@ -11,6 +11,7 @@ import {
     Menu,
     MenuItem,
     ListItemIcon,
+    IconButton,
     Divider,
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
@@ -19,11 +20,14 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
 import API from "../../../../servers/api";
+import { useSearch } from "../../context/SearchContext";
 
 const HeaderTop = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const { setSearchQuery } = useSearch();
+    const [inputValue, setInputValue] = useState("");
 
     const token = localStorage.getItem("access_token");
     const isLoggedIn = !!token;
@@ -52,6 +56,16 @@ const HeaderTop = () => {
         handleMenuClose();
     };
 
+    const handleSearch = (e) => {
+        if (e.key === "Enter" || e.type === "click") {
+            if (inputValue.trim() !== "") {
+                setSearchQuery(inputValue.trim());
+                navigate("/tim-kiem?query=" + encodeURIComponent(inputValue.trim()));
+                setInputValue("");
+            }
+        }
+    };
+
     return (
         <>
             {/* Header */}
@@ -75,8 +89,16 @@ const HeaderTop = () => {
                                 width: 400,
                             }}
                         >
-                            <SearchIcon />
-                            <InputBase placeholder="Tìm tên sách, có dấu..." sx={{ ml: 1, flex: 1 }} />
+                            <InputBase
+                                placeholder="Tìm tên sách, tác giả..."
+                                sx={{ ml: 1, flex: 1 }}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={handleSearch} // Enter để search
+                            />
+                            <IconButton onClick={handleSearch}>
+                                <SearchIcon />
+                            </IconButton>
                         </Box>
                         {/* Auth buttons / User menu */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

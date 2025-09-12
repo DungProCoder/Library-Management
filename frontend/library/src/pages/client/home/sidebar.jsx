@@ -57,6 +57,7 @@ const Sidebar = () => {
                             <ListItemText primary="THỂ LOẠI" />
                             {openMenus.theloai ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
+                        
                         <Collapse in={openMenus.theloai} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <ListItemButton sx={{ pl: 4 }} component={Link} to="/the-loai">
@@ -75,6 +76,16 @@ const Sidebar = () => {
                                 ))}
                             </List>
                         </Collapse>
+                        
+                        {/* Tuyển tập sách */}
+                        <ListItemButton>
+                            <ListItemText
+                                primary="TUYỂN TẬP SÁCH"
+                                component={Link}
+                                to="/tuyen-tap"
+                                sx={{ textDecoration: 'none', color: 'inherit' }}
+                            />
+                        </ListItemButton>
                     </List>
                 </Paper>
             </Box>

@@ -13,7 +13,7 @@ const breadcrumbNameMap = {
     "/categories/edit": { label: "Chỉnh sửa" },
     "/users": { label: "Quản lý người dụng" },
     "/users/edit": { label: "Chỉnh sửa" },
-    "/borrow": { label: "Quản lý mượn/trả sách" },
+    "/borrow": { label: "Quản lý mượn - trả sách" },
 };
 
 const BreadcrumbsComponent = ({ items }) => {

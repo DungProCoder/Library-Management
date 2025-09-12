@@ -9,6 +9,7 @@ import {
     Snackbar,
     Alert
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import API from '../../../servers/api';
 
 const RatingForm = ({ book }) => {
@@ -112,7 +113,7 @@ const RatingForm = ({ book }) => {
                 )
             ) : (
                 <Typography variant="body1" color="text.secondary">
-                    Vui lòng đăng nhập để đánh giá sách.
+                    Vui lòng đăng nhập để đánh giá sách. <Link to="/dang-nhap">Đăng nhập</Link>
                 </Typography>
             )}
         </Paper>
