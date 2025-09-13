@@ -80,7 +80,7 @@ const Sidebar = () => {
                         {/* Tuyển tập sách */}
                         <ListItemButton>
                             <ListItemText
-                                primary="TUYỂN TẬP SÁCH"
+                                primary="SÁCH TUYỂN TẬP"
                                 component={Link}
                                 to="/tuyen-tap"
                                 sx={{ textDecoration: 'none', color: 'inherit' }}

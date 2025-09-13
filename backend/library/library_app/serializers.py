@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating
+from .models import Book, BookSeries, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating
 from users.serializers import UserSerializer
 from django.utils import timezone
 from datetime import timedelta
@@ -10,6 +10,11 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug']
         read_only_fields = ['slug']
 
+class BookSeriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookSeries
+        fields = "__all__"
+
 class BookSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     category_id = serializers.PrimaryKeyRelatedField(
@@ -17,12 +22,25 @@ class BookSerializer(serializers.ModelSerializer):
         source="category",
         write_only=True
     )
+    series = BookSeriesSerializer(read_only=True)
+    series_id = serializers.PrimaryKeyRelatedField(
+        queryset=BookSeries.objects.all(),
+        source="series",
+        write_only=True,
+        allow_null=True,
+        required=False,
+    )
     avg_rating = serializers.FloatField(read_only=True)
     count_rating = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'isbn', 'description', 'quantity', 'category', 'category_id', 'image', 'avg_rating', 'count_rating']
+        fields = [
+            'id', 'title', 'author', 'isbn', 'description',
+            'quantity', 'category', 'category_id', 'image',
+            'avg_rating', 'count_rating', 'series', 'series_id',
+            'volume_number'
+        ]
         read_only_fields = ['isbn']
 
 class BorrowRequestSerializer(serializers.ModelSerializer):

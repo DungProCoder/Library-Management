@@ -11,6 +11,8 @@ import {
     Snackbar,
     Alert,
     MenuItem,
+    FormControlLabel,
+    Checkbox,
 } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { useParams, useNavigate } from "react-router-dom";
@@ -25,6 +27,10 @@ const BookAdd = () => {
     const [description, setDescription] = useState("");
     const [quantity, setQuantity] = useState(1);
     const [category, setCategory] = useState("");
+    const [isSeries, setIsSeries] = useState(false);
+    const [series, setSeries] = useState("");
+    const [volume, setVolume] = useState("");
+    const [seriesList, setSeriesList] = useState([]);
     const [categories, setCategories] = useState([]);
 
     const [success, setSuccess] = useState(false);
@@ -55,9 +61,18 @@ const BookAdd = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/admin/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
+        }
+    };
+
+    const fetchSeries = async () => {
+        try {
+            const response = await API.get("/admin/book-series/");
+            setSeriesList(response.data.results);
+        } catch (error) {
+            console.error("Failed to fetch series book:", error);
         }
     };
 
@@ -69,7 +84,9 @@ const BookAdd = () => {
                 setAuthor(response.data.author);
                 setDescription(response.data.description);
                 setQuantity(response.data.quantity);
-                setCategory(response.data.category);
+                setCategory(response.data.category?.id);
+                setSeries(response.data.series?.id);
+                setVolume(response.data.volume_number);
 
                 if (response.data.image) {
                     setImage(response.data.image);
@@ -81,6 +98,7 @@ const BookAdd = () => {
         };
         fetchBooks();
         fetchCategories();
+        fetchSeries();
     }, [id]);
 
     const handleSubmit = async (e) => {
@@ -99,6 +117,10 @@ const BookAdd = () => {
         formData.append("quantity", quantity);
         formData.append("category_id", category);
         if (image instanceof File) formData.append("image", image);
+        if (isSeries) {
+            formData.append("series_id", series);
+            formData.append("volume_number", volume);
+        }
 
         try {
             await API.put(`/admin/books/${id}/`, formData, {
@@ -217,6 +239,44 @@ const BookAdd = () => {
                             </MenuItem>
                         ))}
                     </TextField>
+
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isSeries}
+                                onChange={(e) => setIsSeries(e.target.checked)}
+                            />
+                        }
+                        label="Thuộc tuyển tập"
+                    />
+
+                    {isSeries && (
+                        <>
+                            <TextField
+                                select
+                                label="Tuyển tập"
+                                value={series}
+                                onChange={(e) => setSeries(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                            >
+                                {seriesList.map((s) => (
+                                    <MenuItem key={s.id} value={s.id}>
+                                        {s.title}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
+                            <TextField
+                                label="Tập số"
+                                type="number"
+                                value={volume}
+                                onChange={(e) => setVolume(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                            />
+                        </>
+                    )}
 
                     <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }}>
                         <Button

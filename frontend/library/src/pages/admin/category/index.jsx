@@ -34,7 +34,7 @@ const CategoryList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm("Bạn có chắc muốn tải lại danh sách thể loại?")) {
+        if (window.confirm("Bạn có chắc muốn xóa thể loại này?")) {
             try {
                 await API.delete(`/admin/categories/${id}/`);
                 setSuccess(true);

@@ -3,6 +3,7 @@ export const ROUTER = {
         HOME: '/',
         CATEGORY: '/the-loai',
         SEARCH: '/tim-kiem',
+        SERIES: '/tuyen-tap',
         BOOK_DETAIL: '/:isbn',
         CART: '/dang-ky-muon-sach',
         CHECKOUT: '/tien-hanh-muon-sach',
@@ -25,7 +26,12 @@ export const ROUTER = {
         CATEGORIES: "categories",
         CATEGORY_ADD: "categories/create",
         CATEGORY_EDIT: "categories/edit/:id",
-        CATEGORY_DETAIL: "categories/detail/:id",
+
+        // Quản lý tuyển tập
+        SERIES: "series",
+        SERIES_ADD: "series/create",
+        SERIES_EDIT: "series/edit/:id",
+        SERIES_DETAIL: "series/detail/:id",
 
         // Quản lý mượn trả
         BORROW: "borrow",

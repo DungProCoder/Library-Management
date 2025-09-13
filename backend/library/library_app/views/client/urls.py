@@ -3,10 +3,14 @@ from .book import BookListView, BookDetailView, BookListAtCategoryView, BookSear
 from .category import CategoryListView
 from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, BorrowRecordCreateView, ReturnBookView, CheckActiveBorrowView
 from .rating import RatingBookView, RatingListView, UserBookRatingView
+from .series import BooksWithSeriesListView
 
 urlpatterns = [
     # categories
     path('categories/', CategoryListView.as_view(), name='category_list_create'),
+
+    # series
+    path('book-series/', BooksWithSeriesListView.as_view(), name='books_with_series'),
 
     # books
     path('books/', BookListAtCategoryView.as_view(), name='book_list_at_category'),

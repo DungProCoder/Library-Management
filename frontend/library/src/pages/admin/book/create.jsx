@@ -11,6 +11,8 @@ import {
     Snackbar,
     Alert,
     MenuItem,
+    FormControlLabel,
+    Checkbox,
 } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +26,10 @@ const BookAdd = () => {
     const [description, setDescription] = useState("");
     const [quantity, setQuantity] = useState(1);
     const [category, setCategory] = useState("");
+    const [isSeries, setIsSeries] = useState(false);
+    const [series, setSeries] = useState("");
+    const [volume, setVolume] = useState("");
+    const [seriesList, setSeriesList] = useState([]);
     const [categories, setCategories] = useState([]);
 
     const [success, setSuccess] = useState(false);
@@ -47,6 +53,8 @@ const BookAdd = () => {
         if (!description.trim()) newErrors.description = "Mô tả không được để trống";
         if (quantity <= 0) newErrors.quantity = "Số lượng phải lớn hơn 0";
         if (!category) newErrors.category = "Thể loại không được để trống";
+        if (!series) newErrors.series = "Tuyển tập không được để trống";
+        if (!volume || volume <= 0) newErrors.volume = "Tấp số phải lớn hơn 0";
 
         return newErrors;
     }
@@ -54,14 +62,24 @@ const BookAdd = () => {
     const fetchCategories = async () => {
         try {
             const response = await API.get("/admin/categories/");
-            setCategories(response.data);
+            setCategories(response.data.results);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
     };
 
+    const fetchSeries = async () => {
+        try {
+            const response = await API.get("/admin/book-series/");
+            setSeriesList(response.data.results);
+        } catch (error) {
+            console.error("Failed to fetch series book:", error);
+        }
+    };
+
     useEffect(() => {
         fetchCategories();
+        fetchSeries();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -80,6 +98,11 @@ const BookAdd = () => {
         formData.append("quantity", quantity);
         formData.append("category_id", category);
         if (image) formData.append("image", image);
+
+        if (isSeries) {
+            formData.append("series_id", series);
+            formData.append("volume_number", volume);
+        }
 
         try {
             await API.post("/admin/books/", formData, {
@@ -198,6 +221,44 @@ const BookAdd = () => {
                             </MenuItem>
                         ))}
                     </TextField>
+
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isSeries}
+                                onChange={(e) => setIsSeries(e.target.checked)}
+                            />
+                        }
+                        label="Thuộc tuyển tập"
+                    />
+
+                    {isSeries && (
+                        <>
+                            <TextField
+                                select
+                                label="Tuyển tập"
+                                value={series}
+                                onChange={(e) => setSeries(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                            >
+                                {seriesList.map((s) => (
+                                    <MenuItem key={s.id} value={s.id}>
+                                        {s.title}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
+                            <TextField
+                                label="Tập số"
+                                type="number"
+                                value={volume}
+                                onChange={(e) => setVolume(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                            />
+                        </>
+                    )}
 
                     <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }}>
                         <Button

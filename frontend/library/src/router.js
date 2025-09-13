@@ -9,6 +9,7 @@ import MasterLayout from "./pages/client/theme/master";
 import HomePage from "./pages/client/home";
 import Category from "./pages/client/category";
 import Search from "./pages/client/search";
+import Series from "./pages/client/series";
 import BookDetail from "./pages/client/detail";
 import Cart from "./pages/client/cart";
 import Checkout from "./pages/client/checkout";
@@ -32,6 +33,10 @@ import CategoryList from "./pages/admin/category";
 import CategoryAdd from "./pages/admin/category/create";
 import CategoryEdit from "./pages/admin/category/edit";
 
+import SeriesPage from "./pages/admin/series";
+import SeriesAdd from "./pages/admin/series/create";
+import SeriesEdit from "./pages/admin/series/edit";
+
 import BorrowRecordList from "./pages/admin/borrow";
 
 import UserList from "./pages/admin/user";
@@ -46,6 +51,7 @@ const renderUserRouter = () => {
             <Route index element={<HomePage />} />
             <Route path={ROUTER.USER.CATEGORY} element={<Category />} />
             <Route path={ROUTER.USER.SEARCH} element={<Search />} />
+            <Route path={ROUTER.USER.SERIES} element={<Series />} />
             <Route path={ROUTER.USER.BOOK_DETAIL} element={<BookDetail />} />
             <Route path={ROUTER.USER.LOGIN} element={<Login />} />
             <Route path={ROUTER.USER.REGISTER} element={<Register />} />
@@ -79,6 +85,10 @@ const renderAdminRouter = () => {
                 <Route path={ROUTER.ADMIN.CATEGORIES} element={<CategoryList />} />
                 <Route path={ROUTER.ADMIN.CATEGORY_ADD} element={<CategoryAdd />} />
                 <Route path={ROUTER.ADMIN.CATEGORY_EDIT} element={<CategoryEdit />} />
+
+                <Route path={ROUTER.ADMIN.SERIES} element={<SeriesPage />} />
+                <Route path={ROUTER.ADMIN.SERIES_ADD} element={<SeriesAdd />} />
+                <Route path={ROUTER.ADMIN.SERIES_EDIT} element={<SeriesEdit />} />
 
                 <Route path={ROUTER.ADMIN.USERS} element={<UserList />} />
                 <Route path={ROUTER.ADMIN.EDIT} element={<UserEdit />} />

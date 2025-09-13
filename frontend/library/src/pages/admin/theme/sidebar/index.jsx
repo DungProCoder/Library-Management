@@ -10,6 +10,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import CategoryIcon from "@mui/icons-material/Category";
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -21,6 +22,7 @@ const Sidebar = () => {
         { text: "Bảng điều khiển", icon: <DashboardIcon />, path: "/admin" },
         { text: "Quản lý sách", icon: <LibraryBooksIcon />, path: "/admin/books" },
         { text: "Thể loại", icon: <CategoryIcon />, path: "/admin/categories" },
+        { text: "Tuyển tập", icon: <CollectionsBookmarkIcon />, path: "/admin/series" },
         { text: "Người dùng", icon: <PeopleIcon />, path: "/admin/users" },
         { text: "Mượn/Trả sách", icon: <AssignmentIcon />, path: "/admin/borrow" },
     ];
