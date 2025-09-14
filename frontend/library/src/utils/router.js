@@ -11,6 +11,7 @@ export const ROUTER = {
         REGISTER: '/dang-ky',
         ACCOUNT: '/thong-tin-ca-nhan',
         FORBBIDDEN: '/403',
+        SUPPORT: '/ho-tro',
     },
     ADMIN: {
         ROOT: "/admin",

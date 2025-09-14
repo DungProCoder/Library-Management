@@ -55,6 +55,17 @@ class Book(models.Model):
     @property
     def count_rating(self):
         return self.ratings.count()
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="favorited_by")
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')  # mỗi user chỉ được favorite 1 lần / sách
+
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title}"
     
 class BorrowRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

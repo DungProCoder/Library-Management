@@ -20,6 +20,7 @@ import Profile from "./pages/client/profile";
 import Info from "./pages/client/profile/info";
 import BorrowedList from "./pages/client/profile/borrowed";
 import Account from "./pages/client/profile/account";
+import FavoritesPage from "./pages/client/profile/favorite";
 
 // Admin
 import AdminLayout from "./pages/admin/theme/master";
@@ -44,6 +45,7 @@ import UserEdit from "./pages/admin/user/edit";
 
 // Common pages
 import Forbidden from "./pages/client/errors/forbidden";
+import SupportPage from "./pages/client/support";
 
 const renderUserRouter = () => {
     return (
@@ -64,11 +66,13 @@ const renderUserRouter = () => {
                     <Route path="thong-tin-lien-he" element={<Info />} />
                     <Route path="sach-da-muon" element={<BorrowedList />} />
                     <Route path="tai-khoan" element={<Account />} />
+                    <Route path="sach-yeu-thich" element={<FavoritesPage />} />
                 </Route>
             </Route>
 
             {/* Common */}
-            <Route path="/403" element={<Forbidden />} />
+            <Route path={ROUTER.USER.FORBIDDEN} element={<Forbidden />} />
+            <Route path={ROUTER.USER.SUPPORT} element={<SupportPage />} />
         </Route>
     );
 }

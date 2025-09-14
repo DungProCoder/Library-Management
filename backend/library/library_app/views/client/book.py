@@ -1,8 +1,9 @@
 from django.db.models import Avg
+from django.db.models import OuterRef, Exists, Value, BooleanField
 from rest_framework import generics, filters, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from ...serializers import BookSerializer
-from ...models import Book
+from ...models import Book, Favorite
 from ...pagination import StandardResultsSetPagination
 
 class BookListView(generics.ListAPIView):
@@ -15,6 +16,16 @@ class BookDetailView(generics.RetrieveAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
     lookup_field = 'isbn'
+
+    def get_queryset(self):
+        qs = Book.objects.all()
+        user = self.request.user
+        if user.is_authenticated:
+            fav_qs = Favorite.objects.filter(user=user, book=OuterRef('pk'))
+            qs = qs.annotate(is_favorite=Exists(fav_qs))
+        else:
+            qs = qs.annotate(is_favorite=Value(False, output_field=BooleanField()))
+        return qs
 
 class BookListAtCategoryView(generics.ListAPIView):
     serializer_class = BookSerializer

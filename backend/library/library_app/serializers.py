@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, BookSeries, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating
+from .models import Book, BookSeries, Favorite, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating
 from users.serializers import UserSerializer
 from django.utils import timezone
 from datetime import timedelta
@@ -32,6 +32,7 @@ class BookSerializer(serializers.ModelSerializer):
     )
     avg_rating = serializers.FloatField(read_only=True)
     count_rating = serializers.IntegerField(read_only=True)
+    is_favorite = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Book
@@ -39,9 +40,37 @@ class BookSerializer(serializers.ModelSerializer):
             'id', 'title', 'author', 'isbn', 'description',
             'quantity', 'category', 'category_id', 'image',
             'avg_rating', 'count_rating', 'series', 'series_id',
-            'volume_number'
+            'volume_number', 'is_favorite'
         ]
         read_only_fields = ['isbn']
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    book = BookSerializer(read_only=True)
+    book_id = serializers.PrimaryKeyRelatedField(
+        queryset=Book.objects.all(), source="book", write_only=True
+    )
+
+    class Meta:
+        model = Favorite
+        fields = ['id', 'book', 'book_id', 'date_add']
+        read_only_fields = ['date_add']
+    
+    def validate(self, attrs):
+        request = self.context["request"]
+        user = request.user
+        book = attrs["book"]
+
+        # Kiểm tra trùng sách trong giỏ
+        if Favorite.objects.filter(user=user, book=book).exists():
+            raise serializers.ValidationError({
+                "book": "Sách này bạn đã được thêm vào danh sách yêu thích."
+            })
+
+        return attrs
+    
+    def create(self, validated_data):
+        user = self.context["request"].user
+        return Favorite.objects.create(user=user, **validated_data)
 
 class BorrowRequestSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)

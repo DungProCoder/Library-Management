@@ -1,16 +1,48 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import {
     Box,
     Grid,
     Typography,
     Button,
     Chip,
-    Rating
+    Rating,
+    Snackbar,
+    Alert,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CircularProgress from "@mui/material/CircularProgress";
 import API from '../../../servers/api';
 
 const Book = ({ book }) => {
+    const [loading, setLoading] = useState(false);
+    const [isFav, setIsFav] = useState(!!book.is_favorite);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleToggle = async () => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            const res = await API.post(`/client/books/${book.id}/favorite/`);
+            setIsFav(res.data.favorited);
+            if (res.data.favorited) {
+                setMessage("Đã thêm vào danh sách yêu thích!");
+            } else {
+                setMessage("Đã xóa khỏi danh sách yêu thích!");
+            }
+            setSuccess(true);
+        } catch (err) {
+            console.error("Toggle favorite failed", err);
+            setMessage("Có lỗi xảy ra, vui lòng thử lại!");
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     const handleAddToBorrow = async () => {
         try {
             await API.post("/client/borrow-requests/", { book_id: book.id });
@@ -71,8 +103,23 @@ const Book = ({ book }) => {
                         >
                             {book.quantity === 0 ? "📕 Hết Sách" : "📗 Mượn Sách"}
                         </Button>
-                        <Button variant="outlined" color="danger" sx={{ borderRadius: 5 }}>
-                            <FavoriteBorderIcon />
+                        <Button
+                            variant="outlined"
+                            color="error"
+                            sx={{ borderRadius: 5 }}
+                            onClick={handleToggle}
+                            disabled={loading}
+                            startIcon={
+                                loading ? (
+                                    <CircularProgress size={18} />
+                                ) : isFav ? (
+                                    <FavoriteIcon />
+                                ) : (
+                                    <FavoriteBorderIcon />
+                                )
+                            }
+                        >
+                            {isFav ? "Bỏ yêu thích" : "Thêm yêu thích"}
                         </Button>
                     </Box>
 
@@ -82,6 +129,28 @@ const Book = ({ book }) => {
                     </Box>
                 </Grid>
             </Grid>
+
+            {/* Snackbar thành công */}
+            <Snackbar
+                open={success}
+                autoHideDuration={3000}
+                onClose={() => setSuccess(false)}
+            >
+                <Alert severity="success" variant="filled" onClose={() => setSuccess(false)}>
+                    {message}
+                </Alert>
+            </Snackbar>
+
+            {/* Snackbar lỗi */}
+            <Snackbar
+                open={error}
+                autoHideDuration={3000}
+                onClose={() => setError(false)}
+            >
+                <Alert severity="error" variant="filled" onClose={() => setError(false)}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     );
 };

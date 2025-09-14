@@ -4,6 +4,7 @@ from .category import CategoryListView
 from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, BorrowRecordCreateView, ReturnBookView, CheckActiveBorrowView
 from .rating import RatingBookView, RatingListView, UserBookRatingView
 from .series import BooksWithSeriesListView
+from .favorite import FavoriteListView, BookFavoriteToggleAPIView
 
 urlpatterns = [
     # categories
@@ -17,6 +18,10 @@ urlpatterns = [
     path('books/home/', BookListView.as_view(), name='book_list'),
     path('books/search/', BookSearchView.as_view(), name='book_search'),
     path('books/<str:isbn>/', BookDetailView.as_view(), name='book_detail'),
+
+    # favorites
+    path("favorites/", FavoriteListView.as_view(), name="favorite-list"),
+    path("books/<int:pk>/favorite/", BookFavoriteToggleAPIView.as_view(), name="book-favorite-toggle"),
 
     # borrow-request
     path('borrow-requests/', BorrowRequestListCreateView.as_view(), name='borrow_request_list_create'),
