@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -28,6 +28,10 @@ const Checkout = () => {
     const handleBack = () => {
         setActiveStep((prev) => prev - 1);
     };
+
+    useEffect(() => {
+        document.title = "Library - Tiến hành muợn sách";
+    }, []);
 
     return (
         <>

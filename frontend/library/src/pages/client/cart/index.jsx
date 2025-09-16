@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -7,6 +7,10 @@ import {
 import CartPage from './cart';
 
 const Cart = () => {
+    useEffect(() => {
+        document.title = "Library - Sách đăng ký mượn";
+    }, []);
+
     return (
         <>
             <Box sx={{ p: 2 }}>

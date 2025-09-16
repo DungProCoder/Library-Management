@@ -45,6 +45,10 @@ const BookList = () => {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Quản lý sách";
+    }, []);
+
     const handleDelete = async (id) => {
         if (window.confirm("Bạn có chắc muốn xóa sách?")) {
             try {

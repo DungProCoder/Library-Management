@@ -47,6 +47,10 @@ const UserList = () => {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Quản lý người dùng";
+    }, []);
+
     const columns = [
         {
             field: "stt",

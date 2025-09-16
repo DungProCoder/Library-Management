@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     TextField,
@@ -55,6 +55,10 @@ const Register = () => {
             }
         }
     };
+
+    useEffect(() => {
+        document.title = "Library - Đăng ký";
+    }, []);
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", bgcolor: "#f5f5f5" }}>

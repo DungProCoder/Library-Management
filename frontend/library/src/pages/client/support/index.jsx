@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     Typography,
@@ -29,6 +29,10 @@ const SupportPage = () => {
         setMessages([...messages, { from: "user", text: input }]);
         setInput("");
     };
+
+    useEffect(() => {
+        document.title = "Library - Hỗ trợ khách hàng";
+    }, []);
 
     return (
         <Box

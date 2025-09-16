@@ -42,6 +42,10 @@ const BorrowRecordList = () => {
         fetchRecords();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Quản lý mượn / trả sách";
+    }, []);
+
     const handleConfirmReturn = async (id) => {
         if (window.confirm("Xác nhận đã trả toàn bộ sách?")) {
             try {

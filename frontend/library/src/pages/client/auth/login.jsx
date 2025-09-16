@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
     Box,
     TextField,
@@ -49,6 +49,10 @@ const Login = () => {
             setError("Sai tên đăng nhập hoặc mật khẩu!");
         }
     };
+
+    useEffect(() => {
+        document.title = "Library - Đăng nhập";
+    }, []);
 
     return (
         <Box

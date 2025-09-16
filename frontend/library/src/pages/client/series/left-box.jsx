@@ -20,7 +20,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import API from "../../../servers/api";
 
-const LeftBox = ({ category }) => {
+const LeftBox = () => {
     const [books, setBooks] = useState([]);
     const [sortBy, setSortBy] = useState("name"); // 'name' | 'rating'
     const [limit, setLimit] = useState(24);       // page_size
@@ -35,8 +35,6 @@ const LeftBox = ({ category }) => {
                 const params = new URLSearchParams();
                 params.append("page", page);
                 params.append("page_size", limit);
-
-                if (category) params.append("category", category);
 
                 // map sortBy to backend ordering param
                 if (sortBy === "rating") params.append("ordering", "-avg_rating_db");
@@ -55,7 +53,7 @@ const LeftBox = ({ category }) => {
         };
 
         fetchBooks();
-    }, [page, limit, category, sortBy]);
+    }, [page, limit, sortBy]);
 
     const handleAddToBorrow = async (bookId) => {
         try {

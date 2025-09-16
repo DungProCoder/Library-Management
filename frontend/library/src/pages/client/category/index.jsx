@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import {
     Box,
     Grid,
@@ -12,6 +12,10 @@ import { useCategory } from '../context/CategoryContext';
 
 const Category = () => {
     const { selectedCategory } = useCategory();
+
+    useEffect(() => {
+        document.title = "Library - Thể loại";
+    }, []);
 
     return (
         <>

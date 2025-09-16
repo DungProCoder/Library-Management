@@ -32,6 +32,10 @@ const SeriesEdit = () => {
         fetchCategory();
     }, [id]);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Chỉnh sửa tuyển tập";
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

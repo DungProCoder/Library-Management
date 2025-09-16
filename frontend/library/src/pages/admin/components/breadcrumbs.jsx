@@ -33,7 +33,7 @@ const BreadcrumbsComponent = ({ items }) => {
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
         >
-            <Link component={RouterLink} to="/" underline="hover" color="inherit">
+            <Link component={RouterLink} to="/admin" underline="hover" color="inherit">
                 <HomeIcon fontSize="small" />
             </Link>
             {pathnames.map((value, index) => {

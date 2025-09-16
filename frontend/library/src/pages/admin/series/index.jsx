@@ -31,6 +31,10 @@ const SeriesPage = () => {
         fetchSeries();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Quản lý tuyển tập";
+    }, []);
+
     const handleDelete = async (id) => {
         if (window.confirm("Bạn có chắc muốn xóa tuyển tập sách này?")) {
             try {

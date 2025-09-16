@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import {
     Container,
     Box
@@ -8,6 +8,10 @@ import Sidebar from "./sidebar";
 import Books from "./book";
 
 const HomePage = () => {
+    useEffect(() => {
+        document.title = "Library - Trang chủ";
+    }, []);
+
     return (
         <>
             <Container maxWidth="lg">

@@ -79,6 +79,10 @@ const EditUser = () => {
         fetchUser();
     }, [id])
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Chỉnh sửa người dùng";
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

@@ -101,6 +101,10 @@ const BookAdd = () => {
         fetchSeries();
     }, [id]);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Chỉnh sửa sách";
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

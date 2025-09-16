@@ -32,6 +32,10 @@ const CategoryEdit = () => {
         fetchCategory();
     }, [id]);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Chỉnh sửa thể loại";
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

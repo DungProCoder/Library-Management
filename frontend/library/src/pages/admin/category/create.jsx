@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import API from "../../../servers/api";
 import {
     Box,
@@ -40,6 +40,10 @@ const CategoryAdd = () => {
         setSuccess(true);
         setName("");
     };
+
+    useEffect(() => {
+        document.title = "Library - Quản trị - Thêm mới thể loại";
+    }, []);
 
     return (
         <Box

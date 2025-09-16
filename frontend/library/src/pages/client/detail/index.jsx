@@ -21,7 +21,7 @@ const BookDetail = () => {
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                const response = await API.get(`/client/books/${isbn}`);                
+                const response = await API.get(`/client/books/${isbn}`);
                 setBook(response.data);
             } catch (error) {
                 console.error('Failed to fetch book:', error);
@@ -39,6 +39,10 @@ const BookDetail = () => {
         fetchBook();
         fetchRatingBooks();
     }, [isbn]);
+
+    useEffect(() => {
+        document.title = `Library - ${book ? book.title : "Loading..."}`;
+    }, [book]);
 
     if (!book) return <p>Loading...</p>;
 

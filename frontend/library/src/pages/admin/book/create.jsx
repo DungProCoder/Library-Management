@@ -82,6 +82,10 @@ const BookAdd = () => {
         fetchSeries();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Thêm mới sách";
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

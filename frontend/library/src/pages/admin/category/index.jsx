@@ -33,6 +33,10 @@ const CategoryList = () => {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        document.title = "Library - Quản trị - Quản lý thể loại";
+    }, []);
+
     const handleDelete = async (id) => {
         if (window.confirm("Bạn có chắc muốn xóa thể loại này?")) {
             try {

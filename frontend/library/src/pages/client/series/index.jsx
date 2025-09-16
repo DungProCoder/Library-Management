@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import {
     Box,
     Grid,
@@ -8,10 +8,11 @@ import LeftBox from './left-box';
 import RightBox from './right-box';
 import Breadcrumb from './breadcrumb';
 import Banner from './banner';
-import { useCategory } from '../context/CategoryContext';
 
 const Category = () => {
-    const { selectedCategory } = useCategory();
+    useEffect(() => {
+        document.title = "Library - Sách tuyển tập";
+    }, []);
 
     return (
         <>
@@ -25,7 +26,7 @@ const Category = () => {
                 <Container>
                     <Grid container spacing={3}>
                         <Grid size={8}>
-                            <LeftBox category={selectedCategory} />
+                            <LeftBox />
                         </Grid>
                         <Grid size={4}>
                             <RightBox />

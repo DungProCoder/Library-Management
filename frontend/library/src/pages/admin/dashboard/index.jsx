@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import {
     Card,
     CardContent,
@@ -17,6 +17,10 @@ const Dashboard = () => {
         borrowing: 24,
         returned: 96,
     };
+
+    useEffect(() => {
+        document.title = "Library - Quản trị - Tổng quan";
+    }, []);
 
     return (
         <div style={{ padding: "20px" }}>
