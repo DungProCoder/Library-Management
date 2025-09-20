@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, BookSeries, Favorite, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating
+from .models import Book, BookSeries, Favorite, BorrowRequest, BorrowRecord, BookRecordItem, Category, Rating, FAQ
 from users.serializers import UserSerializer
 from django.utils import timezone
 from datetime import timedelta
@@ -162,3 +162,8 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ['id', 'user', 'user_id', 'book_id', 'rate', 'comment', 'date_add']
+
+class FAQSerializer(serializers.Serializer):
+    class Meta:
+        model = FAQ
+        fields = ['id', 'question', 'answer', 'keywords']

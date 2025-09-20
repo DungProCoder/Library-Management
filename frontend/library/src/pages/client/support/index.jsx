@@ -12,22 +12,46 @@ import {
     Avatar,
     Stack,
     Divider,
+    CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SendIcon from "@mui/icons-material/Send";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import PersonIcon from "@mui/icons-material/Person";
+import API from "../../../servers/api";
 
 const SupportPage = () => {
     const [messages, setMessages] = useState([
         { from: "support", text: "Xin chào! Bạn cần hỗ trợ gì không?" },
     ]);
     const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!input.trim()) return;
-        setMessages([...messages, { from: "user", text: input }]);
+
+        const userMessage = { from: "user", text: input };
+        setMessages((prev) => [...prev, userMessage]);
         setInput("");
+        setLoading(true);
+
+        try {
+            const res = await API.post("/client/chat/", { message: input });
+
+            setTimeout(() => {
+                setMessages((prev) => [
+                    ...prev,
+                    { from: "support", text: res.data.reply },
+                ]);
+                setLoading(false);
+            }, 2000);
+        } catch (error) {
+            console.log("Chat error", error);
+            setMessages((prev) => [
+                ...prev,
+                { from: "support", text: "Lỗi kết nối. Vui lòng thử lại." },
+            ]);
+        }
     };
 
     useEffect(() => {
@@ -175,6 +199,11 @@ const SupportPage = () => {
                                 )}
                             </Stack>
                         ))}
+                        {loading && (
+                            <Typography align="left" sx={{ my: 1 }}>
+                                <CircularProgress size={16} /> Đang trả lời...
+                            </Typography>
+                        )}
                     </Box>
                     <Divider sx={{ mb: 2 }} />
                     <Stack direction="row" spacing={2}>
@@ -184,11 +213,13 @@ const SupportPage = () => {
                             placeholder="Nhập tin nhắn..."
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
+                            onKeyPress={(e) => e.key === "Enter" && handleSend()}
                         />
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}
                             onClick={handleSend}
+                            disabled={loading}
                         >
                             Gửi
                         </Button>

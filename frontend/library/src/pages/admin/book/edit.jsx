@@ -302,7 +302,7 @@ const BookAdd = () => {
                 <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => navigate("/admin/categories")}
+                    onClick={() => navigate("/admin/books")}
                 >
                     <KeyboardReturnIcon /> Quay lại
                 </Button>

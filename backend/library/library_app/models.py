@@ -122,3 +122,11 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title} ({self.rate})"
+    
+class FAQ(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+    keywords = models.TextField(null=True, blank=True, help_text="Nhập nhiều từ khóa, cách nhau bởi dấu phẩy")  # từ khóa tìm kiếm
+
+    def __str__(self):
+        return self.question

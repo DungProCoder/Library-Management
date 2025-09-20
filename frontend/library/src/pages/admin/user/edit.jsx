@@ -315,7 +315,7 @@ const EditUser = () => {
                 <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => navigate("/admin/categories")}
+                    onClick={() => navigate("/admin/users")}
                 >
                     <KeyboardReturnIcon /> Quay lại
                 </Button>

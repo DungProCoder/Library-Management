@@ -5,6 +5,7 @@ from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, Borrow
 from .rating import RatingBookView, RatingListView, UserBookRatingView
 from .series import BooksWithSeriesListView
 from .favorite import FavoriteListView, BookFavoriteToggleAPIView
+from .faq import ChatAPIView
 
 urlpatterns = [
     # categories
@@ -36,4 +37,7 @@ urlpatterns = [
     path('rating/', RatingBookView.as_view(), name='rating_book'),
     path('books/<str:isbn>/rating/', RatingListView.as_view(), name='rating_list'),
     path('user/books/<int:pk>/rated/', UserBookRatingView.as_view(), name='user_rated_book'),
+
+    # FAQ
+    path('chat/', ChatAPIView.as_view(), name='chat_api'),
 ]
