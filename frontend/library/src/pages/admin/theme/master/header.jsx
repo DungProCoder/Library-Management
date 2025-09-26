@@ -9,7 +9,9 @@ import {
     IconButton,
     Tooltip,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Settings from "@mui/icons-material/Settings";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Logout from "@mui/icons-material/Logout";
 import Breadcrumbs from "../../components/breadcrumbs";
 import API from "../../../../servers/api";
@@ -18,6 +20,7 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [user, setUser] = useState(null);
     const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -121,6 +124,12 @@ const Header = () => {
                     <Avatar /> Tài khoản
                 </MenuItem>
                 <Divider />
+                <MenuItem onClick={() => { navigate('/'); }}>
+                    <ListItemIcon>
+                        <ArrowBackIcon fontSize="small" />
+                    </ListItemIcon>
+                    Thoát giao diện quản trị
+                </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <Settings fontSize="small" />

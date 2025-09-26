@@ -2,9 +2,6 @@ import { memo, useState, useEffect } from "react";
 import {
     Box,
     Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
     TextField,
     Button,
     Card,
@@ -13,8 +10,10 @@ import {
     Stack,
     Divider,
     CircularProgress,
+    Snackbar,
+    Alert,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { alpha } from "@mui/material/styles";
 import SendIcon from "@mui/icons-material/Send";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import PersonIcon from "@mui/icons-material/Person";
@@ -26,6 +25,42 @@ const SupportPage = () => {
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
+    const [form, setForm] = useState({ name: "", email: "", message: "" });
+    const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+        setErrors({ ...errors, [e.target.name]: "" });
+    };
+
+    const validate = () => {
+        let newErrors = {};
+        if (!form.name.trim()) newErrors.name = "Vui lòng nhập tên";
+        if (!form.email.trim()) newErrors.email = "Vui lòng nhập email";
+        if (!form.message.trim()) newErrors.message = "Vui lòng nhập vấn đề bạn gặp phải";
+        return newErrors;
+    };
+
+    const handleFeedback = async (e) => {
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        try {
+            await API.post("/client/faqs/", {
+                question: form.message,
+            });
+            setSuccess(true);
+            setForm({ name: "", email: "", message: "" });
+        } catch (error) {
+            console.log("Feedback error", error);
+        }
+    }
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -73,81 +108,48 @@ const SupportPage = () => {
                 HỖ TRỢ KHÁCH HÀNG
             </Typography>
 
-            {/* FAQ */}
-            <Card sx={{ width: "100%", maxWidth: 800 }}>
-                <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        ❓ Câu hỏi thường gặp
-                    </Typography>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography>Làm thế nào để mượn sách?</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ fontWeight: "bold" }}>
-                            Bạn cần đăng nhập, chọn sách và bấm nút "Mượn sách". Sau đó đến
-                            thư viện và nhận sách.
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography>Làm thế nào để thêm sách vào danh sách yêu thích?</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ fontWeight: "bold" }}>
-                            Vào trang chi tiết của sách và bấm nút "Yêu thích". Sách sẽ được lưu trong mục
-                            "Danh sách yêu thích" của bạn.
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography>Tôi có thể xem lịch sử mượn sách ở đâu?</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ fontWeight: "bold" }}>
-                            Bạn có thể vào mục "Lịch sử mượn" trong tài khoản để xem danh sách các sách đã
-                            mượn và trả.
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography>Nếu tôi làm mất sách thì phải xử lý thế nào?</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ fontWeight: "bold" }}>
-                            Bạn cần liên hệ trực tiếp với thủ thư để bồi thường hoặc thay thế cuốn sách đã mất
-                            theo quy định của thư viện.
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography>Tôi có thể cập nhật thông tin cá nhân không?</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ fontWeight: "bold" }}>
-                            Có, bạn có thể vào phần "Cập nhật tài khoản" để thay đổi mật khẩu, email hoặc thông tin liên hệ của mình.
-                        </AccordionDetails>
-                    </Accordion>
-                </CardContent>
-            </Card>
-
             {/* Contact Form */}
             <Card sx={{ width: "100%", maxWidth: 800 }}>
                 <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        📩 Liên hệ với chúng tôi
-                    </Typography>
-                    <Stack spacing={2}>
-                        <TextField label="Tên của bạn" fullWidth />
-                        <TextField label="Email của bạn" type="email" fullWidth />
-                        <TextField
-                            label="Vấn đề bạn gặp phải là gì?"
-                            multiline
-                            rows={4}
-                            fullWidth
-                        />
-                        <Button variant="contained" fullWidth>
-                            Gửi
-                        </Button>
-                    </Stack>
+                    <form onSubmit={handleFeedback}>
+                        <Typography variant="h6" gutterBottom>
+                            📩 Liên hệ với chúng tôi
+                        </Typography>
+
+                        <Stack spacing={2}>
+                            <TextField
+                                label="Tên của bạn"
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                            />
+                            <TextField
+                                label="Email của bạn"
+                                name="email"
+                                type="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                            />
+                            <TextField
+                                label="Vấn đề bạn gặp phải là gì?"
+                                name="message"
+                                value={form.message}
+                                onChange={handleChange}
+                                multiline
+                                rows={4}
+                                fullWidth
+                                required
+                            />
+
+                            <Button type="submit" variant="contained" fullWidth>
+                                Gửi
+                            </Button>
+                        </Stack>
+                    </form>
                 </CardContent>
             </Card>
 
@@ -187,7 +189,9 @@ const SupportPage = () => {
                                         borderRadius: 2,
                                         maxWidth: "70%",
                                         bgcolor:
-                                            msg.from === "user" ? "primary.light" : "grey.200",
+                                            msg.from === "user"
+                                                ? (theme) => alpha(theme.palette.primary.main, 0.3)
+                                                : "grey.200",
                                     }}
                                 >
                                     <Typography variant="body2">{msg.text}</Typography>
@@ -200,9 +204,20 @@ const SupportPage = () => {
                             </Stack>
                         ))}
                         {loading && (
-                            <Typography align="left" sx={{ my: 1 }}>
-                                <CircularProgress size={16} /> Đang trả lời...
-                            </Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "left",
+                                    gap: 1,
+                                    p: 1.5,
+                                    borderRadius: 2,
+                                    maxWidth: "19%",
+                                    bgcolor: "grey.200",
+                                }}
+                            >
+                                <CircularProgress size={16} />
+                                <Typography variant="body2">Đang trả lời...</Typography>
+                            </Box>
                         )}
                     </Box>
                     <Divider sx={{ mb: 2 }} />
@@ -226,6 +241,16 @@ const SupportPage = () => {
                     </Stack>
                 </CardContent>
             </Card>
+
+            <Snackbar
+                open={success}
+                autoHideDuration={3000}
+                onClose={() => setSuccess(false)}
+            >
+                <Alert severity="success" onClose={() => setSuccess(false)}>
+                    ✅ Đã gửi thành công. Chúng tôi sẽ xem xét và cho bạn câu trả lời sớm nhất có thể!
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

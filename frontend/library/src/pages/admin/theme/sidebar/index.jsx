@@ -14,6 +14,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 
 const Sidebar = () => {
     const location = useLocation();
@@ -25,6 +26,7 @@ const Sidebar = () => {
         { text: "Tuyển tập", icon: <CollectionsBookmarkIcon />, path: "/admin/series" },
         { text: "Người dùng", icon: <PeopleIcon />, path: "/admin/users" },
         { text: "Mượn/Trả sách", icon: <AssignmentIcon />, path: "/admin/borrow" },
+        { text: "FAQ", icon: <QuestionAnswerIcon />, path: "/admin/faqs" },
     ];
 
     return (

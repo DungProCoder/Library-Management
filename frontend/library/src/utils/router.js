@@ -40,5 +40,10 @@ export const ROUTER = {
         // Quản lý người dùng
         USERS: "users",
         EDIT: "users/edit/:id",
+
+        // Quản lý FAQ
+        FAQ: "faqs",
+        FAQ_ADD: "faqs/create",
+        FAQ_EDIT: "faqs/edit/:id",
     },
 }

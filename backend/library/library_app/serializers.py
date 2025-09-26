@@ -163,7 +163,7 @@ class RatingSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ['id', 'user', 'user_id', 'book_id', 'rate', 'comment', 'date_add']
 
-class FAQSerializer(serializers.Serializer):
+class FAQSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQ
         fields = ['id', 'question', 'answer', 'keywords']

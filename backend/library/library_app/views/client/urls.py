@@ -5,7 +5,7 @@ from .borrow import BorrowRequestListCreateView, BorrowRequestDeleteView, Borrow
 from .rating import RatingBookView, RatingListView, UserBookRatingView
 from .series import BooksWithSeriesListView
 from .favorite import FavoriteListView, BookFavoriteToggleAPIView
-from .faq import ChatAPIView
+from .faq import ChatAPIView, FAQCreateAPIView
 
 urlpatterns = [
     # categories
@@ -40,4 +40,5 @@ urlpatterns = [
 
     # FAQ
     path('chat/', ChatAPIView.as_view(), name='chat_api'),
+    path('faqs/', FAQCreateAPIView.as_view(), name='faq_create'),
 ]

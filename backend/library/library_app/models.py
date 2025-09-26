@@ -125,8 +125,13 @@ class Rating(models.Model):
     
 class FAQ(models.Model):
     question = models.CharField(max_length=255)
-    answer = models.TextField()
-    keywords = models.TextField(null=True, blank=True, help_text="Nhập nhiều từ khóa, cách nhau bởi dấu phẩy")  # từ khóa tìm kiếm
+    answer = models.TextField(null=True, blank=True)
+    keywords = models.JSONField(
+        models.CharField(max_length=50),
+        null = True,
+        blank=True,
+        default=list
+    )
 
     def __str__(self):
         return self.question

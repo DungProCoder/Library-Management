@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions
+from rest_framework import generics, permissions
 from ...models import Book, FAQ
+from ...serializers import FAQSerializer
 from rapidfuzz import fuzz
 
 class ChatAPIView(APIView):
@@ -20,7 +21,7 @@ class ChatAPIView(APIView):
         best_score = 0
         for faq in faqs:
             if faq.keywords:
-                keywords = [k.strip().lower() for k in faq.keywords.split(",")]
+                keywords = [k.strip().lower() for k in faq.keywords]
                 score = sum(1 for kw in keywords if kw in message)
                 if score > best_score:
                     best_match = faq
@@ -48,3 +49,8 @@ class ChatAPIView(APIView):
             return Response({"reply": f"Xin lỗi, tôi không tìm thấy câu trả lời. Tuy nhiên, bạn có thể quan tâm đến cuốn sách '{suggested_books.title}'."})
         
         return Response({"reply": "Xin lỗi, tôi không tìm thấy câu trả lời cho câu hỏi của bạn."})
+
+class FAQCreateAPIView(generics.CreateAPIView):
+    queryset = FAQ.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = FAQSerializer

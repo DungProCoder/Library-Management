@@ -3,6 +3,7 @@ from .book import BookListCreateView, BookRetrieveUpdateDestroyView
 from .borrow import BorrowRecordListView, ReturnBookView, OverdueEmailView
 from .category import CategoryListCreateView, CategoryDetailView
 from .series import BookSeriesListCreateView, BookSeriesDetailView
+from .faq import FAQListCreateAPIView, FAQUpdateDeleteAPIView
 
 urlpatterns = [
     # Category URLs
@@ -21,4 +22,8 @@ urlpatterns = [
     path('borrow/', BorrowRecordListView.as_view(), name='borrow_book_list'),
     path('return/<int:pk>/', ReturnBookView.as_view(), name='return_book'),
     path("send-overdue-emails/", OverdueEmailView.as_view(), name="send-overdue-emails"),
+
+    # FAQ URLs
+    path('faqs/', FAQListCreateAPIView.as_view(), name='faq_list_create'),
+    path('faqs/<int:pk>/', FAQUpdateDeleteAPIView.as_view(), name='faq_update_delete'),
 ]

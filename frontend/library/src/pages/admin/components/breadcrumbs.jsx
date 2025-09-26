@@ -17,6 +17,9 @@ const breadcrumbNameMap = {
     "/users": { label: "Quản lý người dụng" },
     "/users/edit": { label: "Chỉnh sửa" },
     "/borrow": { label: "Quản lý mượn - trả sách" },
+    "/faqs": { label: "Quản lý FAQs" },
+    "/faqs/create": { label: "Thêm FAQ" },
+    "/faqs/edit": { label: "Chỉnh sửa" },
 };
 
 const BreadcrumbsComponent = ({ items }) => {

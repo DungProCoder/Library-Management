@@ -43,6 +43,10 @@ import BorrowRecordList from "./pages/admin/borrow";
 import UserList from "./pages/admin/user";
 import UserEdit from "./pages/admin/user/edit";
 
+import FAQPage from "./pages/admin/faq";
+import FAQAdd from "./pages/admin/faq/create";
+import FAQEdit from "./pages/admin/faq/edit";
+
 // Common pages
 import Forbidden from "./pages/client/errors/forbidden";
 import SupportPage from "./pages/client/support";
@@ -98,6 +102,10 @@ const renderAdminRouter = () => {
                 <Route path={ROUTER.ADMIN.EDIT} element={<UserEdit />} />
 
                 <Route path={ROUTER.ADMIN.BORROW} element={<BorrowRecordList />} />
+
+                <Route path={ROUTER.ADMIN.FAQ} element={<FAQPage />} />
+                <Route path={ROUTER.ADMIN.FAQ_ADD} element={<FAQAdd />} />
+                <Route path={ROUTER.ADMIN.FAQ_EDIT} element={<FAQEdit />} />
             </Route>
         </Route>
     )
